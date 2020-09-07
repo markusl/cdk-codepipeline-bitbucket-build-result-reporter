@@ -7,6 +7,8 @@ Automatically report all CodePipeline build results to a Bitbucket server. For d
 
 ## Usage
 
+Add the library to your AWS CDK project:
+
 ```sh
 npm i --save cdk-codepipeline-bitbucket-build-result-reporter
 ```
