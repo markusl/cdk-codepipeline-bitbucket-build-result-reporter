@@ -19,3 +19,7 @@ npm i --save cdk-codepipeline-bitbucket-build-result-reporter
     vpc: fakeVpc,
   });
 ```
+
+### Configure Bitbucket token
+
+`aws ssm put-parameter --name "/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN" --value "<generated-token>" --type "SecureString"`
