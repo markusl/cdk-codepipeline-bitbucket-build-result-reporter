@@ -16,7 +16,7 @@ npm i --save cdk-codepipeline-bitbucket-build-result-reporter
   new CodePipelineBitBucketBuildResultReporter(stack, 'CodePipelineBitBucketBuildResultReporter', {
     bitBucketServerAddress: 'bitbucket-server.com',
     bitBucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
-    vpc: fakeVpc,
+    vpc,
   });
 ```
 
