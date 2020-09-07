@@ -3,9 +3,13 @@
 
 # cdk-codepipeline-bitbucket-build-result-reporter
 
-Automatically report all CodePipeline build results to a Bitbucket server.
+Automatically report all CodePipeline build results to a Bitbucket server. For details, see the Bitbucket REST API documentation <https://docs.atlassian.com/bitbucket-server/rest/4.0.0/bitbucket-build-rest.html>.
 
 ## Usage
+
+```sh
+npm i --save cdk-codepipeline-bitbucket-build-result-reporter
+```
 
 ```ts
   // In your infrastructure account, add to your stack
