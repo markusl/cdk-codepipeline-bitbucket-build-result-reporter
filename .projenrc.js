@@ -3,7 +3,7 @@ const {
   Semver
 } = require('projen');
 
-const AWS_CDK_LATEST_RELEASE = '1.64.0';
+const AWS_CDK_LATEST_RELEASE = '1.68.0';
 const CONSTRUCTS_LATEST_RELEASE = '3.0.4';
 
 const project = new JsiiProject({

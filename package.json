@@ -31,7 +31,7 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.64.0",
+    "@aws-cdk/assert": "^1.68.0",
     "@aws-cdk/aws-ec2": null,
     "@aws-cdk/aws-events": null,
     "@aws-cdk/aws-events-targets": null,
@@ -64,23 +64,23 @@
     "typescript": "^3.9.5"
   },
   "peerDependencies": {
-    "@aws-cdk/aws-ec2": "^1.64.0",
-    "@aws-cdk/aws-events": "^1.64.0",
-    "@aws-cdk/aws-events-targets": "^1.64.0",
-    "@aws-cdk/aws-iam": "^1.64.0",
-    "@aws-cdk/aws-lambda": "^1.64.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.64.0",
-    "@aws-cdk/core": "^1.64.0",
+    "@aws-cdk/aws-ec2": "^1.68.0",
+    "@aws-cdk/aws-events": "^1.68.0",
+    "@aws-cdk/aws-events-targets": "^1.68.0",
+    "@aws-cdk/aws-iam": "^1.68.0",
+    "@aws-cdk/aws-lambda": "^1.68.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.68.0",
+    "@aws-cdk/core": "^1.68.0",
     "constructs": "3.0.4"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.64.0",
-    "@aws-cdk/aws-events": "^1.64.0",
-    "@aws-cdk/aws-events-targets": "^1.64.0",
-    "@aws-cdk/aws-iam": "^1.64.0",
-    "@aws-cdk/aws-lambda": "^1.64.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.64.0",
-    "@aws-cdk/core": "^1.64.0",
+    "@aws-cdk/aws-ec2": "^1.68.0",
+    "@aws-cdk/aws-events": "^1.68.0",
+    "@aws-cdk/aws-events-targets": "^1.68.0",
+    "@aws-cdk/aws-iam": "^1.68.0",
+    "@aws-cdk/aws-lambda": "^1.68.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.68.0",
+    "@aws-cdk/core": "^1.68.0",
     "aws-sdk": "^2.734.0",
     "constructs": "3.0.4",
     "node-fetch": "^2.6.1"
