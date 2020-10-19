@@ -44,7 +44,8 @@ tsconfig.json
 cdk.context.json
 cdk.out
 .parcel-cache
-package.json
+coverage
+doc
 !/package.json
 !/.npmignore
 !/LICENSE

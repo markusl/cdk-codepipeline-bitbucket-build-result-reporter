@@ -26,9 +26,7 @@ const project = new AwsCdkConstructLibrary({
     '@aws-cdk/aws-lambda-nodejs',
   ],
   devDependencies: {
-    '@aws-cdk/assert': Semver.caret(AWS_CDK_LATEST_RELEASE),
     '@types/aws-lambda': Semver.caret('8.10.61'),
-    '@types/jest': Semver.caret('26.0.12'),
     '@types/node': Semver.caret('14.6.2'),
     '@types/node-fetch': Semver.caret('2.5.7'),
     'parcel': Semver.pinned('2.0.0-beta.1'),
