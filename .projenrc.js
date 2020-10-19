@@ -11,9 +11,10 @@ const PROJECT_DESCRIPTION = 'A JSII construct lib for reporting AWS CodePipeline
 const project = new AwsCdkConstructLibrary({
   name: PROJECT_NAME,
   description: PROJECT_DESCRIPTION,
-  'authorName': 'Markus',
-  'authorEmail': 'markus.lindqvist@iki.fi',
-  'repository': 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
+  authorName: 'Markus',
+  authorEmail: 'markus.lindqvist@iki.fi',
+  stability: 'stable',
+  repository: 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
   cdkVersion: AWS_CDK_LATEST_RELEASE,
   cdkDependencies: [
     '@aws-cdk/core',
@@ -44,21 +45,14 @@ const project = new AwsCdkConstructLibrary({
   ],
 });
 
-project.gitignore.exclude(
-  '.cdk.staging',
-  'cdk.context.json',
-  'cdk.out',
-  '.parcel-cache',
-  'package.json'
-);
-
-project.npmignore.exclude(
+const common_exclude = [
   '.cdk.staging',
   'cdk.context.json',
   'cdk.out',
   '.parcel-cache',
   'coverage',
   'doc'
-);
-
+];
+project.gitignore.exclude(...common_exclude);
+project.npmignore.exclude(...common_exclude);
 project.synth();
