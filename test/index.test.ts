@@ -1,8 +1,8 @@
 import { App, Stack } from '@aws-cdk/core';
-import { CodePipelineBitBucketBuildResultReporter } from '../src/index';
+import { CodePipelineBitbucketBuildResultReporter } from '../src/index';
 import '@aws-cdk/assert/jest';
 
-test('Create CodePipelineBitBucketBuildResultReporter', () => {
+test('Create CodePipelineBitbucketBuildResultReporter', () => {
   const mockApp = new App();
   const stack = new Stack(mockApp, 'testing-stack');
 
@@ -16,9 +16,9 @@ test('Create CodePipelineBitBucketBuildResultReporter', () => {
     privateSubnetRouteTableIds: ['rtb-6666', 'rtb-6666'],
   };
 
-  new CodePipelineBitBucketBuildResultReporter(stack, 'CodePipelineBitBucketBuildResultReporter', {
-    bitBucketServerAddress: 'bitbucket-server.com',
-    bitBucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+  new CodePipelineBitbucketBuildResultReporter(stack, 'CodePipelineBitbucketBuildResultReporter', {
+    bitbucketServerAddress: 'bitbucket-server.com',
+    bitbucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
     vpc: fakeVpc,
   });
 

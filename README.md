@@ -27,7 +27,7 @@ Note: `stack` must be a CDK deployment stage so that the bundled Lambda asset wi
 
 ```ts
   // In your infrastructure account, add to your stack
-  new CodePipelineBitBucketBuildResultReporter(stack, 'CodePipelineBitBucketBuildResultReporter', {
+  new CodePipelineBitbucketBuildResultReporter(stack, 'CodePipelineBitbucketBuildResultReporter', {
     bitBucketServerAddress: 'bitbucket-server.com',
     bitBucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
     vpc,

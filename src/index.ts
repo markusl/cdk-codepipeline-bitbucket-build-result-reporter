@@ -19,7 +19,7 @@ const addCodePipelineEventRule = (scope: cdk.Construct, states: string[], handle
   });
 };
 
-export interface CodePipelineBitBucketBuildResultReporterProps {
+export interface CodePipelineBitbucketBuildResultReporterProps {
   /**
    * The VPC in which to run the status reporter.
    */
@@ -29,19 +29,19 @@ export interface CodePipelineBitBucketBuildResultReporterProps {
    * Name of the SSM parameter that contains the BitBucket access token.
    * @default BITBUCKET_UPDATE_BUILD_STATUS_TOKEN
    */
-  readonly bitBucketTokenName?: string;
+  readonly bitbucketTokenName?: string;
 
   /**
    * The BitBucket server address.
    */
-  readonly bitBucketServerAddress: string;
+  readonly bitbucketServerAddress: string;
 }
 
 /** A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API. */
-export class CodePipelineBitBucketBuildResultReporter extends cdk.Construct {
-  constructor(scope: cdk.Construct, id: string, props: CodePipelineBitBucketBuildResultReporterProps) {
+export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
+  constructor(scope: cdk.Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
     super(scope, id);
-    const bitBucketTokenName = props.bitBucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
+    const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
     const entry = fs.existsSync(path.join(__dirname, 'index.handler.ts'))
       ? path.join(__dirname, 'index.handler.ts') // local development
@@ -54,17 +54,16 @@ export class CodePipelineBitBucketBuildResultReporter extends cdk.Construct {
       runtime: lambda.Runtime.NODEJS_12_X,
       minify: true,
       description: 'Synchronize CodePipeline build statuses to BitBucket',
-      externalModules: ['aws-sdk'],
       environment: {
-        BITBUCKET_SERVER: props.bitBucketServerAddress,
-        BITBUCKET_TOKEN: bitBucketTokenName,
+        BITBUCKET_SERVER: props.bitbucketServerAddress,
+        BITBUCKET_TOKEN: bitbucketTokenName,
       },
     });
-    codePipelineResultHandler.role?.addToPolicy(new iam.PolicyStatement({
+    codePipelineResultHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['ssm:GetParameter'],
-      resources: [`arn:aws:ssm:*:*:parameter/${bitBucketTokenName}`],
+      resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
     }));
-    codePipelineResultHandler.role?.addToPolicy(new iam.PolicyStatement({
+    codePipelineResultHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codepipeline:GetPipelineExecution'],
       resources: ['arn:aws:codepipeline:*:*:*'],
     }));
