@@ -1,6 +1,5 @@
 import * as AwsLambda from 'aws-lambda';
 import * as AWS from 'aws-sdk';
-// eslint-disable-next-line import/no-unresolved
 import fetch from 'node-fetch';
 
 const codePipeline = new AWS.CodePipeline();

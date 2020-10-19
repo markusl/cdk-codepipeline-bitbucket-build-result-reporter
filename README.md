@@ -7,11 +7,23 @@ Automatically report all CodePipeline build results to a Bitbucket server. For d
 
 ## Usage
 
+### Install
+
 Add the library to your AWS CDK project:
 
 ```sh
 npm i --save cdk-codepipeline-bitbucket-build-result-reporter
 ```
+
+### Configure
+
+Configure the Bitbucket token that is used to synchronize statuses:
+
+`aws ssm put-parameter --name "/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN" --value "<generated-token>" --type "SecureString"`
+
+### Use
+
+Note: `stack` must be a CDK deployment stage so that the bundled Lambda asset will be properly deployed.
 
 ```ts
   // In your infrastructure account, add to your stack
@@ -21,7 +33,3 @@ npm i --save cdk-codepipeline-bitbucket-build-result-reporter
     vpc,
   });
 ```
-
-### Configure Bitbucket token
-
-`aws ssm put-parameter --name "/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN" --value "<generated-token>" --type "SecureString"`
