@@ -1,5 +1,5 @@
-import { CodePipelineBitBucketBuildResultReporter } from '../src/index';
 import { App, Stack } from '@aws-cdk/core';
+import { CodePipelineBitBucketBuildResultReporter } from '../src/index';
 import '@aws-cdk/assert/jest';
 
 test('Create CodePipelineBitBucketBuildResultReporter', () => {
@@ -25,7 +25,7 @@ test('Create CodePipelineBitBucketBuildResultReporter', () => {
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Code: {
       S3Bucket: {
-        Ref: 'AssetParameters4244624f2c19a67b2fec5bd5ff765031be5785ac3d403149d21f797ad4d8f3b1S3Bucket10F15ED9',
+        Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3Bucket64216257',
       },
       S3Key: {
         'Fn::Join': [
@@ -38,7 +38,7 @@ test('Create CodePipelineBitBucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParameters4244624f2c19a67b2fec5bd5ff765031be5785ac3d403149d21f797ad4d8f3b1S3VersionKeyBBEC8CD8',
+                      Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3VersionKeyAC3C3664',
                     },
                   ],
                 },
@@ -51,7 +51,7 @@ test('Create CodePipelineBitBucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParameters4244624f2c19a67b2fec5bd5ff765031be5785ac3d403149d21f797ad4d8f3b1S3VersionKeyBBEC8CD8',
+                      Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3VersionKeyAC3C3664',
                     },
                   ],
                 },

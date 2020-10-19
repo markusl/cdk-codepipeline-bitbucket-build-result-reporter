@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as events from '@aws-cdk/aws-events';
 import * as targets from '@aws-cdk/aws-events-targets';
 import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as lambda_nodejs from '@aws-cdk/aws-lambda-nodejs';
- 
+import * as cdk from '@aws-cdk/core';
+
 const addCodePipelineEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
   new events.Rule(scope, 'CodePipelineActionExecutionStateChangeRule', {
     eventPattern: {
@@ -18,7 +18,7 @@ const addCodePipelineEventRule = (scope: cdk.Construct, states: string[], handle
     targets: [new targets.LambdaFunction(handler)],
   });
 };
- 
+
 export interface CodePipelineBitBucketBuildResultReporterProps {
   /**
    * The VPC in which to run the status reporter.
@@ -45,7 +45,7 @@ export class CodePipelineBitBucketBuildResultReporter extends cdk.Construct {
 
     const entry = fs.existsSync(path.join(__dirname, 'index.handler.ts'))
       ? path.join(__dirname, 'index.handler.ts') // local development
-      : path.join(__dirname, 'index.handler.js') // when published in npm
+      : path.join(__dirname, 'index.handler.js'); // when published in npm
 
     const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineBuildResultHandler', {
       entry,

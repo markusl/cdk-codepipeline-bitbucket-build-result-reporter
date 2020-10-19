@@ -1,16 +1,29 @@
 const {
-  JsiiProject,
-  Semver
+  AwsCdkConstructLibrary,
+  Semver,
 } = require('projen');
 
 const AWS_CDK_LATEST_RELEASE = '1.68.0';
-const CONSTRUCTS_LATEST_RELEASE = '3.0.4';
 
-const project = new JsiiProject({
-  "name": "cdk-codepipeline-bitbucket-build-result-reporter",
-  "authorName": "Markus",
-  "authorEmail": "markus.lindqvist@iki.fi",
-  "repository": "https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git",
+const PROJECT_NAME = 'cdk-codepipeline-bitbucket-build-result-reporter';
+const PROJECT_DESCRIPTION = 'A JSII construct lib for reporting AWS CodePipeline build statuses to a Bitbucket server instance';
+
+const project = new AwsCdkConstructLibrary({
+  name: PROJECT_NAME,
+  description: PROJECT_DESCRIPTION,
+  'authorName': 'Markus',
+  'authorEmail': 'markus.lindqvist@iki.fi',
+  'repository': 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
+  cdkVersion: AWS_CDK_LATEST_RELEASE,
+  cdkDependencies: [
+    '@aws-cdk/core',
+    '@aws-cdk/aws-ec2',
+    '@aws-cdk/aws-iam',
+    '@aws-cdk/aws-events',
+    '@aws-cdk/aws-events-targets',
+    '@aws-cdk/aws-lambda',
+    '@aws-cdk/aws-lambda-nodejs',
+  ],
   devDependencies: {
     '@aws-cdk/assert': Semver.caret(AWS_CDK_LATEST_RELEASE),
     '@types/aws-lambda': Semver.caret('8.10.61'),
@@ -20,29 +33,13 @@ const project = new JsiiProject({
     'parcel': Semver.pinned('2.0.0-beta.1'),
   },
   dependencies: {
-    constructs: Semver.pinned(CONSTRUCTS_LATEST_RELEASE),
-    '@aws-cdk/core': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-ec2': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-iam': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-events': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-events-targets': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-lambda': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-lambda-nodejs': Semver.caret(AWS_CDK_LATEST_RELEASE),
     'aws-sdk': Semver.caret('2.734.0'),
+    'aws-lambda': Semver.caret('1.0.6'),
     'node-fetch': Semver.caret('2.6.1'),
-  },
-  peerDependencies: {
-    constructs: Semver.pinned(CONSTRUCTS_LATEST_RELEASE),
-    '@aws-cdk/core': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-ec2': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-iam': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-events': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-events-targets': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-lambda': Semver.caret(AWS_CDK_LATEST_RELEASE),
-    '@aws-cdk/aws-lambda-nodejs': Semver.caret(AWS_CDK_LATEST_RELEASE),
   },
   bundledDependencies: [
     'aws-sdk',
+    'aws-lambda',
     'node-fetch'
   ],
 });
