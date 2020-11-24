@@ -31,7 +31,7 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.73.0",
+    "@aws-cdk/assert": "^1.74.0",
     "@types/aws-lambda": "^8.10.61",
     "@types/jest": "^26.0.7",
     "@types/node": "^10.17.0",
@@ -56,23 +56,23 @@
     "typescript": "^3.9.5"
   },
   "peerDependencies": {
-    "@aws-cdk/aws-ec2": "^1.73.0",
-    "@aws-cdk/aws-events": "^1.73.0",
-    "@aws-cdk/aws-events-targets": "^1.73.0",
-    "@aws-cdk/aws-iam": "^1.73.0",
-    "@aws-cdk/aws-lambda": "^1.73.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.73.0",
-    "@aws-cdk/core": "^1.73.0",
+    "@aws-cdk/aws-ec2": "^1.74.0",
+    "@aws-cdk/aws-events": "^1.74.0",
+    "@aws-cdk/aws-events-targets": "^1.74.0",
+    "@aws-cdk/aws-iam": "^1.74.0",
+    "@aws-cdk/aws-lambda": "^1.74.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.74.0",
+    "@aws-cdk/core": "^1.74.0",
     "constructs": "^3.2.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.73.0",
-    "@aws-cdk/aws-events": "^1.73.0",
-    "@aws-cdk/aws-events-targets": "^1.73.0",
-    "@aws-cdk/aws-iam": "^1.73.0",
-    "@aws-cdk/aws-lambda": "^1.73.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.73.0",
-    "@aws-cdk/core": "^1.73.0",
+    "@aws-cdk/aws-ec2": "^1.74.0",
+    "@aws-cdk/aws-events": "^1.74.0",
+    "@aws-cdk/aws-events-targets": "^1.74.0",
+    "@aws-cdk/aws-iam": "^1.74.0",
+    "@aws-cdk/aws-lambda": "^1.74.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.74.0",
+    "@aws-cdk/core": "^1.74.0",
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.734.0",
     "node-fetch": "^2.6.1"
