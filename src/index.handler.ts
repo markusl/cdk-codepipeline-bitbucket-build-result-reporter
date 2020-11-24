@@ -1,4 +1,4 @@
-import * as AwsLambda from 'aws-lambda';
+import type * as AwsLambda from 'aws-lambda';
 import * as AWS from 'aws-sdk';
 import fetch from 'node-fetch';
 

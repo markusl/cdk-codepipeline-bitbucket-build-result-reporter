@@ -25,13 +25,13 @@ const project = new AwsCdkConstructLibrary({
     '@aws-cdk/aws-lambda-nodejs',
   ],
   devDeps: [
-    '@types/aws-lambda@^8.10.61',
-    '@types/node@^14.6.2',
+    '@types/aws-lambda@^8.10.64',
+    '@types/node@^14.14.9',
     '@types/node-fetch@^2.5.7',
     'parcel@2.0.0-beta.1',
   ],
   deps: [
-    'aws-sdk@2.734.0',
+    'aws-sdk@2.798.0',
     'aws-lambda@^1.0.6',
     'node-fetch@^2.6.1',
   ],

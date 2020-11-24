@@ -37,7 +37,9 @@ export interface CodePipelineBitbucketBuildResultReporterProps {
   readonly bitbucketServerAddress: string;
 }
 
-/** A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API. */
+/** A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
+ * You need to configure SSM parameter BITBUCKET_UPDATE_BUILD_STATUS_TOKEN before using the component.
+ */
 export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
     super(scope, id);

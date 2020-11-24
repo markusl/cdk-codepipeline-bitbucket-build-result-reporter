@@ -19,6 +19,8 @@ Name|Description
 
 A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
 
+You need to configure SSM parameter BITBUCKET_UPDATE_BUILD_STATUS_TOKEN before using the component.
+
 __Implements__: [IConstruct](#constructs-iconstruct), [IConstruct](#aws-cdk-core-iconstruct), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable)
 __Extends__: [Construct](#aws-cdk-core-construct)
 
