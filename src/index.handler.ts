@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 
 const codePipeline = new AWS.CodePipeline();
 const ssm = new AWS.SSM();
+const activeRegion = process.env.AWS_REGION ?? 'eu-central-1';
 
 const getToken = async (Name: string) => {
   const result = await ssm.getParameter({ Name, WithDecryption: true }).promise();
@@ -59,7 +60,7 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
       state: detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED',
       key: `${detail.stage}-${detail.action}`,
       name: detail.action,
-      url: `https://eu-central-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
+      url: `https://${activeRegion}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
       description: `${detail.stage}-${detail.action}`,
     };
 
