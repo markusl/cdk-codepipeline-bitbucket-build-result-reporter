@@ -46,7 +46,10 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
   // console.log(JSON.stringify(event, undefined, 2));
 
   try {
-    const token = await getToken(process.env.BITBUCKET_TOKEN ?? 'token-missing');
+    if (!process.env.BITBUCKET_TOKEN) {
+      throw new Error('Missing BITBUCKET_TOKEN');
+    }
+    const token = await getToken(process.env.BITBUCKET_TOKEN);
 
     const detail = event.detail;
     const execution = await codePipeline.getPipelineExecution({
@@ -56,8 +59,9 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
 
     const revisions = execution.pipelineExecution?.artifactRevisions ?? [{ revisionChangeIdentifier: '' }];
     const revision = revisions[0].revisionId ?? '';
+    const state = detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED';
     const status: BitbucketBuildStatus = {
-      state: detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED',
+      state,
       key: `${detail.stage}-${detail.action}`,
       name: detail.action,
       url: `https://${activeRegion}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,

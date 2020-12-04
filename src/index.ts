@@ -8,7 +8,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as lambda_nodejs from '@aws-cdk/aws-lambda-nodejs';
 import * as cdk from '@aws-cdk/core';
 
-const addCodePipelineEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
+const addCodePipelineActionStateChangeEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
   new events.Rule(scope, 'CodePipelineActionExecutionStateChangeRule', {
     eventPattern: {
       detailType: ['CodePipeline Action Execution State Change'],
@@ -68,6 +68,9 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
       actions: ['codepipeline:GetPipelineExecution'],
       resources: ['arn:aws:codepipeline:*:*:*'],
     }));
-    addCodePipelineEventRule(scope, ['FAILED', 'SUCCEEDED', 'CANCELED'], codePipelineResultHandler);
+
+    // https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
+    const states = ['STARTED', 'SUCCEEDED', 'FAILED', 'CANCELED'];
+    addCodePipelineActionStateChangeEventRule(scope, states, codePipelineResultHandler);
   }
 }
