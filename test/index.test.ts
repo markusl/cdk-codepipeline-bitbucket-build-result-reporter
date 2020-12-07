@@ -25,7 +25,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Code: {
       S3Bucket: {
-        Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3Bucket64216257',
+        Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3Bucket9EFA6651',
       },
       S3Key: {
         'Fn::Join': [
@@ -38,7 +38,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3VersionKeyAC3C3664',
+                      Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3VersionKey505BF077',
                     },
                   ],
                 },
@@ -51,7 +51,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParametersc4e6a78c28879650741f992ec72fd97d8e425223172f1936670c4f470e1276cfS3VersionKeyAC3C3664',
+                      Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3VersionKey505BF077',
                     },
                   ],
                 },
@@ -144,8 +144,9 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
       ],
       'detail': {
         state: [
-          'FAILED',
+          'STARTED',
           'SUCCEEDED',
+          'FAILED',
           'CANCELED',
         ],
       },
