@@ -40,9 +40,15 @@ const putCodePipelineResultToBitBucket = async (token: string, commitId: string,
   return response.json();
 };
 
-export const buildBitbucketBuildStatusBody = (event: AwsLambda.CodePipelineCloudWatchActionEvent): BitbucketBuildStatus => {
+export const buildBitbucketBuildStatusBody = (
+  event: AwsLambda.CodePipelineCloudWatchActionEvent,
+  pipelineExecution: AWS.CodePipeline.PipelineExecution): BitbucketBuildStatus => {
   const detail = event.detail;
-  const state = detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED';
+  const state =
+    pipelineExecution.status === 'InProgress' ? 'INPROGRESS' :
+      pipelineExecution.status === 'Succeeded' ? 'SUCCESSFUL' :
+        pipelineExecution.status === 'Superseded' ? 'SUCCESSFUL' :'FAILED';
+
   console.log(`${detail['execution-id']} Build status ${state} being reported for ${detail.pipeline} ${detail.stage}-${detail.action}`);
 
   return {
@@ -54,6 +60,19 @@ export const buildBitbucketBuildStatusBody = (event: AwsLambda.CodePipelineCloud
   };
 };
 
+const fetchExecution = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {
+  const detail = event.detail;
+  const execution = await codePipeline.getPipelineExecution({
+    pipelineName: detail.pipeline,
+    pipelineExecutionId: detail['execution-id'],
+  }).promise();
+
+  if (!execution.pipelineExecution) {
+    throw new Error(`Could not fetch execution ${detail['execution-id']}`);
+  }
+  return execution.pipelineExecution;
+};
+
 exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {
   // console.log(JSON.stringify(event, undefined, 2));
 
@@ -63,13 +82,9 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
     }
     const token = await getToken(process.env.BITBUCKET_TOKEN);
 
-    const detail = event.detail;
-    const execution = await codePipeline.getPipelineExecution({
-      pipelineName: detail.pipeline,
-      pipelineExecutionId: detail['execution-id'],
-    }).promise();
-    const status = buildBitbucketBuildStatusBody(event);
-    const revisions = execution.pipelineExecution?.artifactRevisions ?? [{ revisionChangeIdentifier: '' }];
+    const pipelineExecution = await fetchExecution(event);
+    const status = buildBitbucketBuildStatusBody(event, pipelineExecution);
+    const revisions = pipelineExecution.artifactRevisions ?? [{ revisionChangeIdentifier: '' }];
     const revision = revisions[0].revisionId ?? '';
 
     const result = await putCodePipelineResultToBitBucket(token, revision, JSON.stringify(status));

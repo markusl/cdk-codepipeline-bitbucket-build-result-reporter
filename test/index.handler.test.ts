@@ -29,8 +29,8 @@ const event = (state: AwsLambda.CodePipelineActionState): AwsLambda.CodePipeline
   },
 });
 
-test('buildBitbucketBuildStatus STARTED', () => {
-  expect(buildBitbucketBuildStatusBody(event('STARTED'))).toMatchObject({
+test('buildBitbucketBuildStatus InProgress', () => {
+  expect(buildBitbucketBuildStatusBody(event('STARTED'), { status: 'InProgress' })).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'myAction',
@@ -39,9 +39,18 @@ test('buildBitbucketBuildStatus STARTED', () => {
   });
 });
 
+test('buildBitbucketBuildStatus Succeeded', () => {
+  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), { status: 'Succeeded' })).toMatchObject({
+    description: 'Prod-myAction',
+    key: 'Prod-myAction',
+    name: 'myAction',
+    state: 'SUCCESSFUL',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+  });
+});
 
-test('buildBitbucketBuildStatus SUCCEEDED', () => {
-  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'))).toMatchObject({
+test('buildBitbucketBuildStatus Superseded', () => {
+  expect(buildBitbucketBuildStatusBody(event('CANCELED'), { status: 'Superseded' })).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'myAction',
