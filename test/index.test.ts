@@ -1,12 +1,14 @@
-import { App, Stack } from '@aws-cdk/core';
+import { Capture } from '@aws-cdk/assert';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import * as cdk from '@aws-cdk/core';
 import { CodePipelineBitbucketBuildResultReporter } from '../src/index';
 import '@aws-cdk/assert/jest';
 
 test('Create CodePipelineBitbucketBuildResultReporter', () => {
-  const mockApp = new App();
-  const stack = new Stack(mockApp, 'testing-stack');
+  const mockApp = new cdk.App();
+  const stack = new cdk.Stack(mockApp, 'testing-stack');
 
-  const fakeVpc = {
+  const fakeVpc: ec2.VpcAttributes = {
     vpcId: 'vpc-12345678',
     vpcCidrBlock: '10.10.10.0/23',
     availabilityZones: ['eu-central-1a', 'eu-central-1b'],
@@ -22,10 +24,11 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
     vpc: fakeVpc,
   });
 
+  const someValue = Capture.anyType();
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Code: {
       S3Bucket: {
-        Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3Bucket9EFA6651',
+        Ref: someValue.capture(),
       },
       S3Key: {
         'Fn::Join': [
@@ -38,7 +41,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3VersionKey505BF077',
+                      Ref: someValue.capture(),
                     },
                   ],
                 },
@@ -51,7 +54,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: 'AssetParametersf35ad5912429774416cd81b44f4a5d3c5e35b67dba3c487c9b997cf209159edeS3VersionKey505BF077',
+                      Ref: someValue.capture(),
                     },
                   ],
                 },

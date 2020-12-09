@@ -4,7 +4,6 @@ import fetch from 'node-fetch';
 
 const codePipeline = new AWS.CodePipeline();
 const ssm = new AWS.SSM();
-const activeRegion = process.env.AWS_REGION ?? 'eu-central-1';
 
 const getToken = async (Name: string) => {
   const result = await ssm.getParameter({ Name, WithDecryption: true }).promise();
@@ -25,7 +24,6 @@ export interface BitbucketBuildStatus {
 // See https://docs.atlassian.com/bitbucket-server/rest/4.0.0/bitbucket-build-rest.html
 const putCodePipelineResultToBitBucket = async (token: string, commitId: string, body: string) => {
   const bitbucketBuildStatusUrl = `https://${process.env.BITBUCKET_SERVER}/rest/build-status/1.0/commits/${commitId}`;
-  console.log(`POST ${bitbucketBuildStatusUrl} ${body}`);
   const response = await fetch(bitbucketBuildStatusUrl, {
     method: 'POST',
     headers: {
@@ -42,6 +40,20 @@ const putCodePipelineResultToBitBucket = async (token: string, commitId: string,
   return response.json();
 };
 
+export const buildBitbucketBuildStatusBody = (event: AwsLambda.CodePipelineCloudWatchActionEvent): BitbucketBuildStatus => {
+  const detail = event.detail;
+  const state = detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED';
+  console.log(`${detail['execution-id']} Build status ${state} being reported for ${detail.pipeline} ${detail.stage}-${detail.action}`);
+
+  return {
+    state,
+    key: `${detail.stage}-${detail.action}`,
+    name: detail.action,
+    url: `https://${event.region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
+    description: `${detail.stage}-${detail.action}`,
+  };
+};
+
 exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {
   // console.log(JSON.stringify(event, undefined, 2));
 
@@ -56,17 +68,9 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
       pipelineName: detail.pipeline,
       pipelineExecutionId: detail['execution-id'],
     }).promise();
-
+    const status = buildBitbucketBuildStatusBody(event);
     const revisions = execution.pipelineExecution?.artifactRevisions ?? [{ revisionChangeIdentifier: '' }];
     const revision = revisions[0].revisionId ?? '';
-    const state = detail.state === 'STARTED' ? 'INPROGRESS' : detail.state === 'SUCCEEDED' ? 'SUCCESSFUL' : 'FAILED';
-    const status: BitbucketBuildStatus = {
-      state,
-      key: `${detail.stage}-${detail.action}`,
-      name: detail.action,
-      url: `https://${activeRegion}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
-      description: `${detail.stage}-${detail.action}`,
-    };
 
     const result = await putCodePipelineResultToBitBucket(token, revision, JSON.stringify(status));
     console.log(result);
