@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import * as path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as events from '@aws-cdk/aws-events';
@@ -45,14 +44,11 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
     super(scope, id);
     const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
-    const entry = fs.existsSync(path.join(__dirname, 'index.handler.ts'))
-      ? path.join(__dirname, 'index.handler.ts') // local development
-      : path.join(__dirname, 'index.handler.js'); // when published in npm
-
     const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineBuildResultHandler', {
-      entry,
+      entry: path.join(__dirname, 'index.handler.ts'),
       vpc: ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc),
       runtime: lambda.Runtime.NODEJS_12_X,
+      memorySize: 256,
       description: 'Synchronize CodePipeline build statuses to BitBucket',
       environment: {
         BITBUCKET_SERVER: props.bitbucketServerAddress,
