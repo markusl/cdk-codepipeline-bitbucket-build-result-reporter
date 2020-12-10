@@ -30,7 +30,7 @@ const event = (state: AwsLambda.CodePipelineActionState): AwsLambda.CodePipeline
 });
 
 test('buildBitbucketBuildStatus InProgress', () => {
-  expect(buildBitbucketBuildStatusBody(event('STARTED'), { status: 'InProgress' })).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('STARTED'), 'InProgress')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'myAction',
@@ -40,7 +40,7 @@ test('buildBitbucketBuildStatus InProgress', () => {
 });
 
 test('buildBitbucketBuildStatus Succeeded', () => {
-  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), { status: 'Succeeded' })).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), 'Succeeded')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'myAction',
@@ -50,7 +50,7 @@ test('buildBitbucketBuildStatus Succeeded', () => {
 });
 
 test('buildBitbucketBuildStatus Superseded', () => {
-  expect(buildBitbucketBuildStatusBody(event('CANCELED'), { status: 'Superseded' })).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('CANCELED'), 'Abandoned')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'myAction',
