@@ -1,4 +1,3 @@
-import * as path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as events from '@aws-cdk/aws-events';
 import * as targets from '@aws-cdk/aws-events-targets';
@@ -45,7 +44,6 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
     const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
     const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineBuildResultHandler', {
-      entry: path.join(__dirname, 'index.handler.ts'),
       vpc: ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc),
       runtime: lambda.Runtime.NODEJS_12_X,
       memorySize: 256,

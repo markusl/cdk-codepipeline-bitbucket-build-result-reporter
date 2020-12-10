@@ -1,6 +1,6 @@
 import type * as AwsLambda from 'aws-lambda';
 import '@aws-cdk/assert/jest';
-import { buildBitbucketBuildStatusBody } from '../src/index.handler';
+import { buildBitbucketBuildStatusBody } from '../src/index.CodePipelineBuildResultHandler';
 
 const event = (state: AwsLambda.CodePipelineActionState): AwsLambda.CodePipelineCloudWatchActionEvent => ({
   'version': '0',
