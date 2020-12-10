@@ -138,6 +138,33 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
     ],
   });
 
+  expect(stack).toHaveResource('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: 'ssm:GetParameter',
+          Effect: 'Allow',
+          Resource: 'arn:aws:ssm:*:*:parameter//my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+        },
+        {
+          Action: [
+            'codepipeline:GetPipelineExecution',
+            'codepipeline:GetPipelineState',
+          ],
+          Effect: 'Allow',
+          Resource: 'arn:aws:codepipeline:*:*:*',
+        },
+      ],
+      Version: '2012-10-17',
+    },
+    PolicyName: 'CodePipelineBuildResultHandlerServiceRoleDefaultPolicy6AF5B18D',
+    Roles: [
+      {
+        Ref: 'CodePipelineBuildResultHandlerServiceRole5C456193',
+      },
+    ],
+  });
+
   expect(stack).toHaveResource('AWS::Events::Rule', {
     EventPattern: {
       'detail-type': [

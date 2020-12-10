@@ -58,7 +58,7 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
       resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
     }));
     codePipelineResultHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
-      actions: ['codepipeline:GetPipelineExecution'],
+      actions: ['codepipeline:GetPipelineExecution', 'codepipeline:GetPipelineState'],
       resources: ['arn:aws:codepipeline:*:*:*'],
     }));
 
