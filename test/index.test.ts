@@ -195,4 +195,35 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
       },
     ],
   });
+
+  expect(stack).toHaveResource('AWS::Events::Rule', {
+    EventPattern: {
+      'detail-type': [
+        'CodeBuild Build State Change',
+      ],
+      'source': [
+        'aws.codebuild',
+      ],
+      'detail': {
+        state: [
+          'IN_PROGRESS',
+          'SUCCEEDED',
+          'FAILED',
+          'STOPPED',
+        ],
+      },
+    },
+    State: 'ENABLED',
+    Targets: [
+      {
+        Arn: {
+          'Fn::GetAtt': [
+            'CodeBuildStatusHandlerE1754F65',
+            'Arn',
+          ],
+        },
+        Id: 'Target0',
+      },
+    ],
+  });
 });

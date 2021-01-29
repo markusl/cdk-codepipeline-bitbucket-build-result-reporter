@@ -17,6 +17,17 @@ const addCodePipelineActionStateChangeEventRule = (scope: cdk.Construct, states:
   });
 };
 
+const addCodeBuildStateChangeEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
+  new events.Rule(scope, 'CodeCodeBuildStateChangeEventRule', {
+    eventPattern: {
+      detailType: ['CodeBuild Build State Change'],
+      source: ['aws.codebuild'],
+      detail: { state: states },
+    },
+    targets: [new targets.LambdaFunction(handler)],
+  });
+};
+
 export interface CodePipelineBitbucketBuildResultReporterProps {
   /**
    * The VPC in which to run the status reporter.
@@ -42,9 +53,9 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
     super(scope, id);
     const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
-
-    const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineStatusHandler', {
-      vpc: ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc),
+    const vpc = ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc);
+    const codePipelineStatusHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineStatusHandler', {
+      vpc,
       runtime: lambda.Runtime.NODEJS_12_X,
       memorySize: 256,
       description: 'Synchronize CodePipeline build statuses to BitBucket',
@@ -53,17 +64,35 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
         BITBUCKET_TOKEN: bitbucketTokenName,
       },
     });
-    codePipelineResultHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
+    codePipelineStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['ssm:GetParameter'],
       resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
     }));
-    codePipelineResultHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
+    codePipelineStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codepipeline:GetPipelineExecution', 'codepipeline:GetPipelineState'],
       resources: ['arn:aws:codepipeline:*:*:*'],
     }));
 
     // https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
-    const states = ['STARTED', 'SUCCEEDED', 'FAILED', 'CANCELED'];
-    addCodePipelineActionStateChangeEventRule(scope, states, codePipelineResultHandler);
+    const codePipelineStates = ['STARTED', 'SUCCEEDED', 'FAILED', 'CANCELED'];
+    addCodePipelineActionStateChangeEventRule(scope, codePipelineStates, codePipelineStatusHandler);
+
+    const codeBuildStatusHandler = new lambda_nodejs.NodejsFunction(scope, 'CodeBuildStatusHandler', {
+      vpc,
+      runtime: lambda.Runtime.NODEJS_12_X,
+      memorySize: 256,
+      description: 'Synchronize CodePipeline build statuses to BitBucket',
+      environment: {
+        BITBUCKET_SERVER: props.bitbucketServerAddress,
+        BITBUCKET_TOKEN: bitbucketTokenName,
+      },
+    });
+    codeBuildStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
+      actions: ['ssm:GetParameter'],
+      resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
+    }));
+    // https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
+    const codeBuildStates = ['IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'STOPPED'];
+    addCodeBuildStateChangeEventRule(scope, codeBuildStates, codeBuildStatusHandler);
   }
 }
