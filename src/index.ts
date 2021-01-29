@@ -43,7 +43,7 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
     super(scope, id);
     const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
-    const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineBuildResultHandler', {
+    const codePipelineResultHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineStatusHandler', {
       vpc: ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc),
       runtime: lambda.Runtime.NODEJS_12_X,
       memorySize: 256,

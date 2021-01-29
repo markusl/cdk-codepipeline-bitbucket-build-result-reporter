@@ -67,7 +67,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': [
-        'CodePipelineBuildResultHandlerServiceRole5C456193',
+        'CodePipelineStatusHandlerServiceRole49C6622A',
         'Arn',
       ],
     },
@@ -85,7 +85,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
       SecurityGroupIds: [
         {
           'Fn::GetAtt': [
-            'CodePipelineBuildResultHandlerSecurityGroup816D5547',
+            'CodePipelineStatusHandlerSecurityGroup7B4F49AA',
             'GroupId',
           ],
         },
@@ -157,10 +157,10 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
       ],
       Version: '2012-10-17',
     },
-    PolicyName: 'CodePipelineBuildResultHandlerServiceRoleDefaultPolicy6AF5B18D',
+    PolicyName: 'CodePipelineStatusHandlerServiceRoleDefaultPolicy8241AF3D',
     Roles: [
       {
-        Ref: 'CodePipelineBuildResultHandlerServiceRole5C456193',
+        Ref: 'CodePipelineStatusHandlerServiceRole49C6622A',
       },
     ],
   });
@@ -187,7 +187,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
       {
         Arn: {
           'Fn::GetAtt': [
-            'CodePipelineBuildResultHandler1508BCAC',
+            'CodePipelineStatusHandlerA91EA00A',
             'Arn',
           ],
         },
