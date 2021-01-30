@@ -205,7 +205,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
         'aws.codebuild',
       ],
       'detail': {
-        state: [
+        'build-status': [
           'IN_PROGRESS',
           'SUCCEEDED',
           'FAILED',

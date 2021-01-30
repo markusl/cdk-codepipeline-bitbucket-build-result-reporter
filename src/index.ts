@@ -22,7 +22,7 @@ const addCodeBuildStateChangeEventRule = (scope: cdk.Construct, states: string[]
     eventPattern: {
       detailType: ['CodeBuild Build State Change'],
       source: ['aws.codebuild'],
-      detail: { state: states },
+      detail: { 'build-status': states },
     },
     targets: [new targets.LambdaFunction(handler)],
   });
