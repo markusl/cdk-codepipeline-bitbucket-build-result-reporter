@@ -91,6 +91,10 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
       actions: ['ssm:GetParameter'],
       resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
     }));
+    codeBuildStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
+      actions: ['codebuild:BatchGetBuilds'],
+      resources: ['*'],
+    }));
     // https://docs.aws.amazon.com/codepipeline/latest/userguide/detect-state-changes-cloudwatch-events.html
     const codeBuildStates = ['IN_PROGRESS', 'SUCCEEDED', 'FAILED', 'STOPPED'];
     addCodeBuildStateChangeEventRule(scope, codeBuildStates, codeBuildStatusHandler);
