@@ -18,8 +18,8 @@ export const buildBitbucketBuildStatusBody = (
   const buildId = detail['build-id'].split(':').slice(-1)[0];
   return {
     state,
-    key: `${detail['project-name']}-${detail['build-status']}-${detail['current-phase']}`,
-    name: `${detail['project-name']}-${detail['build-status']}`,
+    key: `${detail['project-name']}-${buildId}`,
+    name: `CodeBuild-${detail['project-name']}-${detail['build-status']}`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/${detail['project-name']}/build/${detail['project-name']}:${buildId}/?region=${event.region}`,
     description: `${detail['project-name']} build initiated by ${detail['additional-information'].initiator} at ${detail['additional-information']['build-start-time']}`,
   };
