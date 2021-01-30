@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.1.4...v1.1.5) (2021-01-30)
+
+
+### Bug Fixes
+
+* Report unique build key using buildId ([44f510f](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/commit/44f510f1fd7194a2d0630e1715e9b31cfd6c7816))
+
 ### [1.1.4](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.1.3...v1.1.4) (2021-01-30)
 
 
