@@ -14,11 +14,13 @@ export const buildBitbucketBuildStatusBody = (
 
   // console.log(`${detail['execution-id']} Build status ${state} being reported for ${detail.pipeline} ${detail.stage}-${detail.action}`);
 
+  // The actual build id is at the end of the full ARN
+  const buildId = detail['build-id'].split(':').slice(-1)[0];
   return {
     state,
     key: `${detail['project-name']}-${detail['build-status']}-${detail['current-phase']}`,
     name: `${detail['project-name']}-${detail['build-status']}`,
-    url: `https://${event.region}.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/${detail['project-name']}/build/${detail['project-name']}:${detail['build-id']}/?region=${event.region}`,
+    url: `https://${event.region}.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/${detail['project-name']}/build/${detail['project-name']}:${buildId}/?region=${event.region}`,
     description: `${detail['project-name']} build initiated by ${detail['additional-information'].initiator} at ${detail['additional-information']['build-start-time']}`,
   };
 };

@@ -140,7 +140,7 @@ test('buildBitbucketBuildStatus InProgress', () => {
     key: 'my-sample-project-IN_PROGRESS-COMPLETED',
     name: 'my-sample-project-IN_PROGRESS',
     state: 'INPROGRESS',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:arn:aws:codebuild:us-west-2:123456789012:build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
 
@@ -150,7 +150,7 @@ test('buildBitbucketBuildStatus Succeeded', () => {
     key: 'my-sample-project-SUCCEEDED-COMPLETED',
     name: 'my-sample-project-SUCCEEDED',
     state: 'SUCCESSFUL',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:arn:aws:codebuild:us-west-2:123456789012:build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
 
@@ -160,6 +160,6 @@ test('buildBitbucketBuildStatus Failed', () => {
     key: 'my-sample-project-FAILED-COMPLETED',
     name: 'my-sample-project-FAILED',
     state: 'FAILED',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:arn:aws:codebuild:us-west-2:123456789012:build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
