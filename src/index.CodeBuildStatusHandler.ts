@@ -1,5 +1,8 @@
 import type * as AwsLambda from 'aws-lambda';
+import * as AWS from 'aws-sdk';
 import { BitbucketBuildStatus, putCodePipelineResultToBitBucket } from './bitbucket';
+
+const codeBuild = new AWS.CodeBuild();
 
 export const buildBitbucketBuildStatusBody = (
   event: AwsLambda.CodeBuildCloudWatchStateEvent,
@@ -20,13 +23,24 @@ export const buildBitbucketBuildStatusBody = (
   };
 };
 
+export const getCommitId = async (buildId: string) => {
+  const build = await codeBuild.batchGetBuilds({
+    ids: [buildId],
+  }).promise();
+
+  if (!build.builds || !build.builds[0].sourceVersion) {
+    throw new Error('Failed to get builds');
+  }
+  return build.builds[0].sourceVersion;
+};
+
 exports.handler = async (event: AwsLambda.CodeBuildCloudWatchStateEvent) => {
   // console.log(JSON.stringify(event, undefined, 2));
 
   try {
     const status = buildBitbucketBuildStatusBody(event, event.detail['build-status']);
-
-    const result = await putCodePipelineResultToBitBucket(event.detail['additional-information']['source-version'], JSON.stringify(status));
+    const commitId = await getCommitId(event.detail['build-id']);
+    const result = await putCodePipelineResultToBitBucket(commitId, JSON.stringify(status));
     console.log(result);
   } catch (error) {
     console.error(JSON.stringify(error));
