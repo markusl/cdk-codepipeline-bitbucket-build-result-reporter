@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.1.0...v1.1.1) (2021-01-30)
+
+
+### Bug Fixes
+
+* correct listener for CodeBuild event rule ([061d6d7](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/commit/061d6d7432da1e1d9bcb0230cfecacab64a31823))
+
 ## [1.1.0](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.0.19...v1.1.0) (2021-01-29)
 
 
