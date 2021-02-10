@@ -71,7 +71,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
         'Arn',
       ],
     },
-    Runtime: 'nodejs12.x',
+    Runtime: 'nodejs14.x',
     Description: 'Synchronize CodePipeline build statuses to BitBucket',
     MemorySize: 256,
     Environment: {

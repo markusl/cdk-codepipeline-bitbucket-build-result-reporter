@@ -56,7 +56,7 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
     const vpc = ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc);
     const codePipelineStatusHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineStatusHandler', {
       vpc,
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       memorySize: 256,
       description: 'Synchronize CodePipeline build statuses to BitBucket',
       environment: {
