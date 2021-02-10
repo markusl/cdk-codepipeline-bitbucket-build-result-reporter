@@ -24,11 +24,11 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
     vpc: fakeVpc,
   });
 
-  const someValue = Capture.anyType();
+  const someValue1 = Capture.anyType();
   expect(stack).toHaveResource('AWS::Lambda::Function', {
     Code: {
       S3Bucket: {
-        Ref: someValue.capture(),
+        Ref: someValue1.capture(),
       },
       S3Key: {
         'Fn::Join': [
@@ -41,7 +41,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: someValue.capture(),
+                      Ref: someValue1.capture(),
                     },
                   ],
                 },
@@ -54,7 +54,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
                   'Fn::Split': [
                     '||',
                     {
-                      Ref: someValue.capture(),
+                      Ref: someValue1.capture(),
                     },
                   ],
                 },
@@ -86,6 +86,79 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
         {
           'Fn::GetAtt': [
             'CodePipelineStatusHandlerSecurityGroup7B4F49AA',
+            'GroupId',
+          ],
+        },
+      ],
+      SubnetIds: [
+        'subnet-8888',
+        'subnet-9999',
+      ],
+    },
+  });
+
+  const someValue2 = Capture.anyType();
+  expect(stack).toHaveResource('AWS::Lambda::Function', {
+    Code: {
+      S3Bucket: {
+        Ref: someValue2.capture(),
+      },
+      S3Key: {
+        'Fn::Join': [
+          '',
+          [
+            {
+              'Fn::Select': [
+                0,
+                {
+                  'Fn::Split': [
+                    '||',
+                    {
+                      Ref: someValue2.capture(),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              'Fn::Select': [
+                1,
+                {
+                  'Fn::Split': [
+                    '||',
+                    {
+                      Ref: someValue2.capture(),
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ],
+      },
+    },
+    Handler: 'index.handler',
+    Role: {
+      'Fn::GetAtt': [
+        'CodeBuildStatusHandlerServiceRoleF342BBC4',
+        'Arn',
+      ],
+    },
+    Runtime: 'nodejs14.x',
+    Description: 'Synchronize CodeBuild build statuses to BitBucket',
+    MemorySize: 256,
+    Environment: {
+      Variables: {
+        BITBUCKET_SERVER: 'bitbucket-server.com',
+        BITBUCKET_TOKEN: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      },
+    },
+    VpcConfig: {
+      SecurityGroupIds: [
+        {
+          'Fn::GetAtt': [
+            'CodeBuildStatusHandlerSecurityGroup47948056',
             'GroupId',
           ],
         },
