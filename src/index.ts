@@ -4,6 +4,7 @@ import * as targets from '@aws-cdk/aws-events-targets';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as lambda_nodejs from '@aws-cdk/aws-lambda-nodejs';
+import * as logs from '@aws-cdk/aws-logs';
 import * as cdk from '@aws-cdk/core';
 
 const addCodePipelineActionStateChangeEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
@@ -63,6 +64,7 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
         BITBUCKET_SERVER: props.bitbucketServerAddress,
         BITBUCKET_TOKEN: bitbucketTokenName,
       },
+      logRetention: logs.RetentionDays.ONE_MONTH,
     });
     codePipelineStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['ssm:GetParameter'],
@@ -86,6 +88,7 @@ export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
         BITBUCKET_SERVER: props.bitbucketServerAddress,
         BITBUCKET_TOKEN: bitbucketTokenName,
       },
+      logRetention: logs.RetentionDays.ONE_MONTH,
     });
     codeBuildStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['ssm:GetParameter'],
