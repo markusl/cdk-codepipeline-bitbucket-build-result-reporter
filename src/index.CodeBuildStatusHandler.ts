@@ -42,8 +42,15 @@ exports.handler = async (event: AwsLambda.CodeBuildCloudWatchStateEvent) => {
   try {
     const status = buildBitbucketBuildStatusBody(event, event.detail['build-status']);
     const commitId = await getCommitId(event.detail['build-id']);
-    const result = await putCodePipelineResultToBitBucket(commitId, JSON.stringify(status));
-    console.log(result);
+
+    // Skip S3 events. See https://docs.aws.amazon.com/codebuild/latest/userguide/sample-source-version.html
+    if (!commitId.startsWith('arn:aws:s3')) {
+      const result = await putCodePipelineResultToBitBucket(commitId, JSON.stringify(status));
+      console.log({
+        commitId,
+        ...result,
+      });
+    }
   } catch (error) {
     console.error(JSON.stringify(error));
   }
