@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.3.0...v1.4.0) (2021-04-20)
+
+
+### Features
+
+* LogRetention to 1 month ([6de4a9c](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/commit/6de4a9cba1ce73e12f0c376f467b1429da50a319))
+* Skip S3 events in CodeBuild status reporting ([afc5f29](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/commit/afc5f291c76831f5a06516e793e81033638df4d1))
+* Upgrade CDK to 1.99.0 ([260165a](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/commit/260165ac363a337f163ed6d7253f91430e40a95f))
+
 ## [1.3.0](https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter/compare/v1.2.1...v1.3.0) (2021-04-13)
 
 
