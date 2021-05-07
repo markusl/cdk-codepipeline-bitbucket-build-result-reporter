@@ -16,6 +16,11 @@ const project = new AwsCdkConstructLibrary({
   repository: 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
   cdkVersion: AWS_CDK_LATEST_RELEASE,
   defaultReleaseBranch: 'master',
+  tsconfig: {
+    compilerOptions: {
+      lib: ['ES2019'],
+    },
+  },
   cdkDependencies: [
     '@aws-cdk/core',
     '@aws-cdk/aws-ec2',
