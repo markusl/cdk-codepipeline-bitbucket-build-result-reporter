@@ -2,7 +2,12 @@ import type * as AwsLambda from 'aws-lambda';
 import '@aws-cdk/assert/jest';
 import { buildBitbucketBuildStatusBody } from '../src/index.CodePipelineStatusHandler';
 
-const event = (state: AwsLambda.CodePipelineActionState): AwsLambda.CodePipelineCloudWatchActionEvent => ({
+const event = (state: AwsLambda.CodePipelineActionState, type = {
+  owner: 'AWS' as 'AWS' | 'Custom' | 'ThirdParty',
+  category: 'Deploy' as AwsLambda.CodePipelineActionCategory,
+  provider: 'CodeDeploy',
+  version: 1,
+}): AwsLambda.CodePipelineCloudWatchActionEvent => ({
   'version': '0',
   'id': 'event_Id',
   'detail-type': 'CodePipeline Action Execution State Change',
@@ -20,12 +25,7 @@ const event = (state: AwsLambda.CodePipelineActionState): AwsLambda.CodePipeline
     'stage': 'Prod',
     'action': 'myAction',
     'state': state,
-    'type': {
-      owner: 'AWS',
-      category: 'Deploy',
-      provider: 'CodeDeploy',
-      version: 1,
-    },
+    'type': type,
   },
 });
 
@@ -33,7 +33,7 @@ test('buildBitbucketBuildStatus InProgress', () => {
   expect(buildBitbucketBuildStatusBody(event('STARTED'), 'InProgress')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'myAction',
+    name: 'Prod-myAction',
     state: 'INPROGRESS',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
@@ -43,7 +43,7 @@ test('buildBitbucketBuildStatus Succeeded', () => {
   expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), 'Succeeded')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'myAction',
+    name: 'Prod-myAction',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
@@ -53,7 +53,22 @@ test('buildBitbucketBuildStatus Superseded', () => {
   expect(buildBitbucketBuildStatusBody(event('CANCELED'), 'Abandoned')).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'myAction',
+    name: 'Prod-myAction',
+    state: 'SUCCESSFUL',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+  });
+});
+
+test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', () => {
+  expect(buildBitbucketBuildStatusBody(event('FAILED', {
+    owner: 'AWS',
+    provider: 'Manual',
+    category: 'Approval',
+    version: 1,
+  }), 'Abandoned')).toMatchObject({
+    description: 'Prod-myAction',
+    key: 'Prod-myAction',
+    name: 'Prod-myAction',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });

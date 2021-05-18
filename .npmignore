@@ -20,6 +20,7 @@ coverage
 dist
 doc
 junit.xml
+tsconfig.tsbuildinfo
 !.jsii
 !/lib
 !/lib/**/*.d.ts

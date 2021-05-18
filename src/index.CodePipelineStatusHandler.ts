@@ -18,7 +18,7 @@ export const buildBitbucketBuildStatusBody = (
   return {
     state,
     key: `${detail.stage}-${detail.action}`,
-    name: detail.action,
+    name: `${detail.stage}-${detail.action}`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
     description: `${detail.stage}-${detail.action}`,
   };
@@ -42,6 +42,10 @@ const getPipelineActionLatestStatus = async (event: AwsLambda.CodePipelineCloudW
   const pipelineState = await codePipeline.getPipelineState({
     name: event.detail.pipeline,
   }).promise();
+
+  if (event.detail.type.provider === 'Manual' && event.detail.type.category === 'Approval') {
+    return 'Abandoned';
+  }
 
   const stageStates = pipelineState.stageStates?.find((s) => s.stageName === event.detail.stage);
   const action = stageStates?.actionStates?.find((a) => a.actionName === event.detail.action);
