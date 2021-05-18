@@ -138,9 +138,9 @@ test('buildBitbucketBuildStatus InProgress', () => {
   expect(buildBitbucketBuildStatusBody(event('IN_PROGRESS'), 'IN_PROGRESS')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
     key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project-IN_PROGRESS',
+    name: 'CodeBuild-my-sample-project',
     state: 'INPROGRESS',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
 
@@ -148,9 +148,9 @@ test('buildBitbucketBuildStatus Succeeded', () => {
   expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), 'SUCCEEDED')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
     key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project-SUCCEEDED',
+    name: 'CodeBuild-my-sample-project',
     state: 'SUCCESSFUL',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
 
@@ -158,8 +158,8 @@ test('buildBitbucketBuildStatus Failed', () => {
   expect(buildBitbucketBuildStatusBody(event('FAILED'), 'FAILED')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
     key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project-FAILED',
+    name: 'CodeBuild-my-sample-project',
     state: 'FAILED',
-    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/459568918122/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
+    url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
 });
