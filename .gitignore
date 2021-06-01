@@ -13,7 +13,6 @@
 .nyc_output
 .yarn-integrity
 /.changelog.tmp.md
-/.version.tmp.json
 /coverage
 /dist
 /lib
