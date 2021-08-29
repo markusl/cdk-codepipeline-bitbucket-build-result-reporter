@@ -1,12 +1,11 @@
 import { Capture } from '@aws-cdk/assert';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as cdk from '@aws-cdk/core';
+import { App, Stack, aws_ec2 as ec2 } from 'aws-cdk-lib';
 import { CodePipelineBitbucketBuildResultReporter } from '../src/index';
 import '@aws-cdk/assert/jest';
 
 test('Create CodePipelineBitbucketBuildResultReporter', () => {
-  const mockApp = new cdk.App();
-  const stack = new cdk.Stack(mockApp, 'testing-stack');
+  const mockApp = new App();
+  const stack = new Stack(mockApp, 'testing-stack');
 
   const fakeVpc: ec2.VpcAttributes = {
     vpcId: 'vpc-12345678',
@@ -26,44 +25,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
 
   const someValue1 = Capture.anyType();
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Code: {
-      S3Bucket: {
-        Ref: someValue1.capture(),
-      },
-      S3Key: {
-        'Fn::Join': [
-          '',
-          [
-            {
-              'Fn::Select': [
-                0,
-                {
-                  'Fn::Split': [
-                    '||',
-                    {
-                      Ref: someValue1.capture(),
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              'Fn::Select': [
-                1,
-                {
-                  'Fn::Split': [
-                    '||',
-                    {
-                      Ref: someValue1.capture(),
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        ],
-      },
-    },
+    Code: someValue1.capture(),
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': [
@@ -99,44 +61,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
 
   const someValue2 = Capture.anyType();
   expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Code: {
-      S3Bucket: {
-        Ref: someValue2.capture(),
-      },
-      S3Key: {
-        'Fn::Join': [
-          '',
-          [
-            {
-              'Fn::Select': [
-                0,
-                {
-                  'Fn::Split': [
-                    '||',
-                    {
-                      Ref: someValue2.capture(),
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              'Fn::Select': [
-                1,
-                {
-                  'Fn::Split': [
-                    '||',
-                    {
-                      Ref: someValue2.capture(),
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        ],
-      },
-    },
+    Code: someValue2.capture(),
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': [

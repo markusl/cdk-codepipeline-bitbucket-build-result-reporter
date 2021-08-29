@@ -1,12 +1,12 @@
+import * as CodePipeline from '@aws-sdk/client-codepipeline';
 import type * as AwsLambda from 'aws-lambda';
-import * as AWS from 'aws-sdk';
 import { BitbucketBuildStatus, putCodePipelineResultToBitBucket } from './bitbucket';
 
-const codePipeline = new AWS.CodePipeline();
+const codePipeline = new CodePipeline.CodePipelineClient({});
 
 export const buildBitbucketBuildStatusBody = (
   event: AwsLambda.CodePipelineCloudWatchActionEvent,
-  actionStatus: AWS.CodePipeline.ActionExecutionStatus): BitbucketBuildStatus => {
+  actionStatus: CodePipeline.ActionExecutionStatus): BitbucketBuildStatus => {
   const detail = event.detail;
   const state =
     actionStatus === 'InProgress' ? 'INPROGRESS' :
@@ -26,10 +26,10 @@ export const buildBitbucketBuildStatusBody = (
 
 const fetchExecution = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {
   const detail = event.detail;
-  const execution = await codePipeline.getPipelineExecution({
+  const execution = await codePipeline.send(new CodePipeline.GetPipelineExecutionCommand({
     pipelineName: detail.pipeline,
     pipelineExecutionId: detail['execution-id'],
-  }).promise();
+  }));
 
   if (!execution.pipelineExecution) {
     throw new Error(`Could not fetch execution ${detail['execution-id']}`);
@@ -38,18 +38,18 @@ const fetchExecution = async (event: AwsLambda.CodePipelineCloudWatchActionEvent
   return execution.pipelineExecution;
 };
 
-const getPipelineActionLatestStatus = async (event: AwsLambda.CodePipelineCloudWatchActionEvent): Promise<AWS.CodePipeline.ActionExecutionStatus> => {
-  const pipelineState = await codePipeline.getPipelineState({
+const getPipelineActionLatestStatus = async (event: AwsLambda.CodePipelineCloudWatchActionEvent): Promise<CodePipeline.ActionExecutionStatus> => {
+  const pipelineState = await codePipeline.send(new CodePipeline.GetPipelineStateCommand({
     name: event.detail.pipeline,
-  }).promise();
+  }));
 
   if (event.detail.type.provider === 'Manual' && event.detail.type.category === 'Approval') {
-    return 'Abandoned';
+    return CodePipeline.ActionExecutionStatus.Abandoned;
   }
 
   const stageStates = pipelineState.stageStates?.find((s) => s.stageName === event.detail.stage);
   const action = stageStates?.actionStates?.find((a) => a.actionName === event.detail.action);
-  return action?.latestExecution?.status ?? 'Failed';
+  return action?.latestExecution?.status as CodePipeline.ActionExecutionStatus ?? CodePipeline.ActionExecutionStatus.Failed;
 };
 
 exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {

@@ -15,7 +15,8 @@
     "test:update": "npx projen test:update",
     "bump": "npx projen bump",
     "unbump": "npx projen unbump",
-    "upgrade-dependencies": "npx projen upgrade-dependencies",
+    "publish:github": "npx projen publish:github",
+    "upgrade": "npx projen upgrade",
     "upgrade-projen": "npx projen upgrade-projen",
     "default": "npx projen default",
     "watch": "npx projen watch",
@@ -25,8 +26,7 @@
     "publish:npm": "npx projen publish:npm",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
-    "projen": "npx projen",
-    "start": "npx projen start"
+    "projen": "npx projen"
   },
   "author": {
     "name": "Markus",
@@ -34,13 +34,14 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^1.115.0",
+    "@aws-cdk/assert": "^2.0.0-rc.19",
     "@types/aws-lambda": "^8.10.76",
     "@types/jest": "^26.0.22",
     "@types/node": "^10.17.0",
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
+    "constructs": "10.0.5",
     "esbuild": "0.12.16",
     "eslint": "^7.24.0",
     "eslint-import-resolver-node": "^0.3.4",
@@ -54,38 +55,28 @@
     "jsii-pacmak": "^1.27.1",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.27.7",
+    "projen": "^0.27.36",
     "standard-version": "^9",
     "ts-jest": "^26.5.4",
     "typescript": "^3.9.5"
   },
   "peerDependencies": {
-    "@aws-cdk/aws-ec2": "^1.115.0",
-    "@aws-cdk/aws-events": "^1.115.0",
-    "@aws-cdk/aws-events-targets": "^1.115.0",
-    "@aws-cdk/aws-iam": "^1.115.0",
-    "@aws-cdk/aws-lambda": "^1.115.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.115.0",
-    "@aws-cdk/aws-logs": "^1.115.0",
-    "@aws-cdk/core": "^1.115.0",
-    "constructs": "^3.2.27"
+    "aws-cdk-lib": "^2.0.0-rc.19",
+    "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.115.0",
-    "@aws-cdk/aws-events": "^1.115.0",
-    "@aws-cdk/aws-events-targets": "^1.115.0",
-    "@aws-cdk/aws-iam": "^1.115.0",
-    "@aws-cdk/aws-lambda": "^1.115.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.115.0",
-    "@aws-cdk/aws-logs": "^1.115.0",
-    "@aws-cdk/core": "^1.115.0",
+    "@aws-sdk/client-codebuild": "^3.28.0",
+    "@aws-sdk/client-codepipeline": "^3.28.0",
+    "@aws-sdk/client-ssm": "^3.28.0",
+    "aws-cdk-lib": "^2.0.0-rc.19",
     "aws-lambda": "^1.0.6",
-    "aws-sdk": "2.918.0",
     "node-fetch": "^2.6.1"
   },
   "bundledDependencies": [
+    "@aws-sdk/client-codebuild",
+    "@aws-sdk/client-codepipeline",
+    "@aws-sdk/client-ssm",
     "aws-lambda",
-    "aws-sdk",
     "node-fetch"
   ],
   "keywords": [

@@ -1,3 +1,4 @@
+import * as CodePipeline from '@aws-sdk/client-codepipeline';
 import type * as AwsLambda from 'aws-lambda';
 import '@aws-cdk/assert/jest';
 import { buildBitbucketBuildStatusBody } from '../src/index.CodePipelineStatusHandler';
@@ -30,7 +31,7 @@ const event = (state: AwsLambda.CodePipelineActionState, type = {
 });
 
 test('buildBitbucketBuildStatus InProgress', () => {
-  expect(buildBitbucketBuildStatusBody(event('STARTED'), 'InProgress')).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('STARTED'), CodePipeline.ActionExecutionStatus.InProgress)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'Prod-myAction',
@@ -40,7 +41,7 @@ test('buildBitbucketBuildStatus InProgress', () => {
 });
 
 test('buildBitbucketBuildStatus Succeeded', () => {
-  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), 'Succeeded')).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), CodePipeline.ActionExecutionStatus.Succeeded)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'Prod-myAction',
@@ -50,7 +51,7 @@ test('buildBitbucketBuildStatus Succeeded', () => {
 });
 
 test('buildBitbucketBuildStatus Superseded', () => {
-  expect(buildBitbucketBuildStatusBody(event('CANCELED'), 'Abandoned')).toMatchObject({
+  expect(buildBitbucketBuildStatusBody(event('CANCELED'), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'Prod-myAction',
@@ -65,7 +66,7 @@ test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', 
     provider: 'Manual',
     category: 'Approval',
     version: 1,
-  }), 'Abandoned')).toMatchObject({
+  }), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
     name: 'Prod-myAction',

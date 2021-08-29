@@ -1,13 +1,15 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as events from '@aws-cdk/aws-events';
-import * as targets from '@aws-cdk/aws-events-targets';
-import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as lambda_nodejs from '@aws-cdk/aws-lambda-nodejs';
-import * as logs from '@aws-cdk/aws-logs';
-import * as cdk from '@aws-cdk/core';
+import {
+  aws_ec2 as ec2,
+  aws_iam as iam,
+  aws_logs as logs,
+  aws_lambda as lambda,
+  aws_lambda_nodejs as lambda_nodejs,
+  aws_events as events,
+  aws_events_targets as targets,
+} from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
-const addCodePipelineActionStateChangeEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
+const addCodePipelineActionStateChangeEventRule = (scope: Construct, states: string[], handler: lambda.IFunction) => {
   new events.Rule(scope, 'CodePipelineActionExecutionStateChangeRule', {
     eventPattern: {
       detailType: ['CodePipeline Action Execution State Change'],
@@ -18,7 +20,7 @@ const addCodePipelineActionStateChangeEventRule = (scope: cdk.Construct, states:
   });
 };
 
-const addCodeBuildStateChangeEventRule = (scope: cdk.Construct, states: string[], handler: lambda.IFunction) => {
+const addCodeBuildStateChangeEventRule = (scope: Construct, states: string[], handler: lambda.IFunction) => {
   new events.Rule(scope, 'CodeCodeBuildStateChangeEventRule', {
     eventPattern: {
       detailType: ['CodeBuild Build State Change'],
@@ -50,8 +52,8 @@ export interface CodePipelineBitbucketBuildResultReporterProps {
 /** A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
  * You need to configure SSM parameter BITBUCKET_UPDATE_BUILD_STATUS_TOKEN before using the component.
  */
-export class CodePipelineBitbucketBuildResultReporter extends cdk.Construct {
-  constructor(scope: cdk.Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
+export class CodePipelineBitbucketBuildResultReporter extends Construct {
+  constructor(scope: Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
     super(scope, id);
     const bitbucketTokenName = props.bitbucketTokenName ?? 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
     const vpc = ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc);

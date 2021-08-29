@@ -2,7 +2,7 @@ const {
   AwsCdkConstructLibrary,
 } = require('projen');
 
-const AWS_CDK_LATEST_RELEASE = '1.115.0';
+const AWS_CDK_LATEST_RELEASE = '2.0.0-rc.19';
 
 const PROJECT_NAME = 'cdk-codepipeline-bitbucket-build-result-reporter';
 const PROJECT_DESCRIPTION = 'A JSII construct lib for reporting AWS CodePipeline build statuses to a Bitbucket server instance';
@@ -22,27 +22,18 @@ const project = new AwsCdkConstructLibrary({
     },
   },
   cdkDependencies: [
-    '@aws-cdk/core',
-    '@aws-cdk/aws-ec2',
-    '@aws-cdk/aws-iam',
-    '@aws-cdk/aws-logs',
-    '@aws-cdk/aws-events',
-    '@aws-cdk/aws-events-targets',
-    '@aws-cdk/aws-lambda',
-    '@aws-cdk/aws-lambda-nodejs',
+    'aws-cdk-lib',
   ],
   devDeps: [
-    '@types/aws-lambda@^8.10.76',
-    '@types/node-fetch@^2.5.10',
-    'esbuild@0.12.16',
-  ],
-  deps: [
-    'aws-sdk@2.918.0',
-    'aws-lambda@^1.0.6',
-    'node-fetch@^2.6.1',
+    '@types/aws-lambda',
+    '@types/node-fetch',
+    'esbuild',
+    'constructs@10.0.5',
   ],
   bundledDeps: [
-    'aws-sdk',
+    '@aws-sdk/client-ssm',
+    '@aws-sdk/client-codebuild',
+    '@aws-sdk/client-codepipeline',
     'aws-lambda',
     'node-fetch',
   ],
