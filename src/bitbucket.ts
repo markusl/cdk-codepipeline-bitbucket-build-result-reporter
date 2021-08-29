@@ -1,10 +1,10 @@
-import * as AWS from '@aws-sdk/client-ssm';
+import * as SSM from '@aws-sdk/client-ssm';
 import fetch from 'node-fetch';
 
-const ssm = new AWS.SSM({});
+const ssm = new SSM.SSMClient({});
 
 export const getToken = async (Name: string) => {
-  const result = await ssm.getParameter({ Name, WithDecryption: true });
+  const result = await ssm.send(new SSM.GetParameterCommand({ Name, WithDecryption: true }));
   if (result.Parameter && result.Parameter.Value) {
     return result.Parameter?.Value;
   }
