@@ -169,6 +169,11 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
           },
         },
         {
+          Action: 'iam:ListAccountAliases',
+          Effect: 'Allow',
+          Resource: '*',
+        },
+        {
           Action: [
             'codepipeline:GetPipelineExecution',
             'codepipeline:GetPipelineState',

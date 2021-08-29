@@ -1,7 +1,10 @@
 import * as CodePipeline from '@aws-sdk/client-codepipeline';
 import type * as AwsLambda from 'aws-lambda';
+import { mockClient } from 'aws-sdk-client-mock';
 import '@aws-cdk/assert/jest';
-import { buildBitbucketBuildStatusBody } from '../src/index.CodePipelineStatusHandler';
+import { buildBitbucketBuildStatusBody, getPipelineActionLatestStatus } from '../src/index.CodePipelineStatusHandler';
+
+const codePipelineMock = mockClient(CodePipeline.CodePipelineClient);
 
 const event = (state: AwsLambda.CodePipelineActionState, type = {
   owner: 'AWS' as 'AWS' | 'Custom' | 'ThirdParty',
@@ -30,38 +33,38 @@ const event = (state: AwsLambda.CodePipelineActionState, type = {
   },
 });
 
-test('buildBitbucketBuildStatus InProgress', () => {
-  expect(buildBitbucketBuildStatusBody(event('STARTED'), CodePipeline.ActionExecutionStatus.InProgress)).toMatchObject({
+test('buildBitbucketBuildStatus InProgress', async () => {
+  expect(await buildBitbucketBuildStatusBody(event('STARTED'), CodePipeline.ActionExecutionStatus.InProgress)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction',
+    name: 'Prod-myAction (Pipeline_Account)',
     state: 'INPROGRESS',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
 });
 
-test('buildBitbucketBuildStatus Succeeded', () => {
-  expect(buildBitbucketBuildStatusBody(event('SUCCEEDED'), CodePipeline.ActionExecutionStatus.Succeeded)).toMatchObject({
+test('buildBitbucketBuildStatus Succeeded', async () => {
+  expect(await buildBitbucketBuildStatusBody(event('SUCCEEDED'), CodePipeline.ActionExecutionStatus.Succeeded)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction',
+    name: 'Prod-myAction (Pipeline_Account)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
 });
 
-test('buildBitbucketBuildStatus Superseded', () => {
-  expect(buildBitbucketBuildStatusBody(event('CANCELED'), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
+test('buildBitbucketBuildStatus Superseded', async () => {
+  expect(await buildBitbucketBuildStatusBody(event('CANCELED'), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction',
+    name: 'Prod-myAction (Pipeline_Account)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
 });
 
-test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', () => {
-  expect(buildBitbucketBuildStatusBody(event('FAILED', {
+test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', async () => {
+  expect(await buildBitbucketBuildStatusBody(event('FAILED', {
     owner: 'AWS',
     provider: 'Manual',
     category: 'Approval',
@@ -69,8 +72,40 @@ test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', 
   }), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction',
+    name: 'Prod-myAction (Pipeline_Account)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
+});
+
+test('getPipelineActionLatestStatus returns action status for successful event', async () => {
+  const output: CodePipeline.GetPipelineStateCommandOutput = {
+    $metadata: {},
+    stageStates: [
+      {
+        stageName: 'Prod',
+        actionStates: [
+          {
+            actionName: 'myAction',
+            latestExecution: {
+              status: CodePipeline.ActionExecutionStatus.Succeeded,
+            },
+          },
+        ],
+      },
+    ],
+  };
+  codePipelineMock.on(CodePipeline.GetPipelineStateCommand).resolves(output);
+
+  expect(await getPipelineActionLatestStatus(event('SUCCEEDED'))).toBe(CodePipeline.ActionExecutionStatus.Succeeded);
+});
+
+test('getPipelineActionLatestStatus returns failure when event is not found', async () => {
+  const output: CodePipeline.GetPipelineStateCommandOutput = {
+    $metadata: {},
+    stageStates: [],
+  };
+  codePipelineMock.on(CodePipeline.GetPipelineStateCommand).resolves(output);
+
+  expect(await getPipelineActionLatestStatus(event('SUCCEEDED'))).toBe(CodePipeline.ActionExecutionStatus.Failed);
 });

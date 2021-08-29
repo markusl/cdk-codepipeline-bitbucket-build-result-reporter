@@ -32,6 +32,11 @@ const addCodeBuildStateChangeEventRule = (scope: Construct, states: string[], ha
   });
 };
 
+const listAliasesPolicy = new iam.PolicyStatement({
+  actions: ['iam:ListAccountAliases'],
+  resources: ['*'],
+});
+
 /** Common properties */
 export interface CodePipelineBitbucketBuildResultReporterProps {
   /**
@@ -74,6 +79,7 @@ export class CodePipelineBitbucketBuildResultReporter extends Construct {
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
     accessToken.grantRead(codePipelineStatusHandler);
+    codePipelineStatusHandler.role?.addToPrincipalPolicy(listAliasesPolicy);
     codePipelineStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codepipeline:GetPipelineExecution', 'codepipeline:GetPipelineState'],
       resources: ['arn:aws:codepipeline:*:*:*'],
@@ -95,6 +101,7 @@ export class CodePipelineBitbucketBuildResultReporter extends Construct {
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
     accessToken.grantRead(codeBuildStatusHandler);
+    codeBuildStatusHandler.role?.addToPrincipalPolicy(listAliasesPolicy);
     codeBuildStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codebuild:BatchGetBuilds'],
       resources: ['*'],

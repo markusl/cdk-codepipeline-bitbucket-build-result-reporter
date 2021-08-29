@@ -1,6 +1,6 @@
 {
   "name": "cdk-codepipeline-bitbucket-build-result-reporter",
-  "description": "A JSII construct lib for reporting AWS CodePipeline build statuses to a Bitbucket server instance",
+  "description": "A JSII construct lib for reporting AWS CodePipeline and build statuses to a Bitbucket server instance",
   "repository": {
     "type": "git",
     "url": "https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git"
@@ -29,7 +29,7 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Markus",
+    "name": "Markus Lindqvist",
     "email": "markus.lindqvist@iki.fi",
     "organization": false
   },
@@ -37,10 +37,11 @@
     "@aws-cdk/assert": "^2.0.0-rc.19",
     "@types/aws-lambda": "^8.10.76",
     "@types/jest": "^26.0.22",
-    "@types/node": "^10.17.0",
+    "@types/node": "^14.15.0",
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
+    "aws-sdk-client-mock": "^0.5.3",
     "constructs": "10.0.5",
     "esbuild": "0.12.16",
     "eslint": "^7.24.0",
@@ -67,6 +68,7 @@
   "dependencies": {
     "@aws-sdk/client-codebuild": "^3.28.0",
     "@aws-sdk/client-codepipeline": "^3.28.0",
+    "@aws-sdk/client-iam": "^3.28.0",
     "@aws-sdk/client-ssm": "^3.28.0",
     "aws-cdk-lib": "^2.0.0-rc.19",
     "aws-lambda": "^1.0.6",
@@ -75,6 +77,7 @@
   "bundledDependencies": [
     "@aws-sdk/client-codebuild",
     "@aws-sdk/client-codepipeline",
+    "@aws-sdk/client-iam",
     "@aws-sdk/client-ssm",
     "aws-lambda",
     "node-fetch"
@@ -82,6 +85,9 @@
   "keywords": [
     "cdk"
   ],
+  "engines": {
+    "node": ">= 14.15.0"
+  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "0.0.0",

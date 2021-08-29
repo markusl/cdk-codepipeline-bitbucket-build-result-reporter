@@ -1,12 +1,14 @@
 import * as CodePipeline from '@aws-sdk/client-codepipeline';
 import type * as AwsLambda from 'aws-lambda';
 import { BitbucketBuildStatus, putCodePipelineResultToBitBucket } from './bitbucket';
+import { getCurrentAccountAlias } from './iam-helper';
 
 const codePipeline = new CodePipeline.CodePipelineClient({});
 
-export const buildBitbucketBuildStatusBody = (
+
+export const buildBitbucketBuildStatusBody = async (
   event: AwsLambda.CodePipelineCloudWatchActionEvent,
-  actionStatus: CodePipeline.ActionExecutionStatus): BitbucketBuildStatus => {
+  actionStatus: CodePipeline.ActionExecutionStatus): Promise<BitbucketBuildStatus> => {
   const detail = event.detail;
   const state =
     actionStatus === 'InProgress' ? 'INPROGRESS' :
@@ -18,7 +20,7 @@ export const buildBitbucketBuildStatusBody = (
   return {
     state,
     key: `${detail.stage}-${detail.action}`,
-    name: `${detail.stage}-${detail.action}`,
+    name: `${detail.stage}-${detail.action} (${await getCurrentAccountAlias(event.account)})`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
     description: `${detail.stage}-${detail.action}`,
   };
@@ -38,7 +40,7 @@ const fetchExecution = async (event: AwsLambda.CodePipelineCloudWatchActionEvent
   return execution.pipelineExecution;
 };
 
-const getPipelineActionLatestStatus = async (event: AwsLambda.CodePipelineCloudWatchActionEvent): Promise<CodePipeline.ActionExecutionStatus> => {
+export const getPipelineActionLatestStatus = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => {
   const pipelineState = await codePipeline.send(new CodePipeline.GetPipelineStateCommand({
     name: event.detail.pipeline,
   }));
@@ -57,7 +59,7 @@ exports.handler = async (event: AwsLambda.CodePipelineCloudWatchActionEvent) => 
 
   try {
     const actionStatus = await getPipelineActionLatestStatus(event);
-    const status = buildBitbucketBuildStatusBody(event, actionStatus);
+    const status = await buildBitbucketBuildStatusBody(event, actionStatus);
 
     const pipelineExecution = await fetchExecution(event);
     const revisions = pipelineExecution.artifactRevisions ?? [{ revisionChangeIdentifier: '' }];

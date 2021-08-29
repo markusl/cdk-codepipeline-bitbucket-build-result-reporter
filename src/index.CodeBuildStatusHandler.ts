@@ -1,12 +1,13 @@
 import * as CodeBuild from '@aws-sdk/client-codebuild';
 import type * as AwsLambda from 'aws-lambda';
 import { BitbucketBuildStatus, putCodePipelineResultToBitBucket } from './bitbucket';
+import { getCurrentAccountAlias } from './iam-helper';
 
 const codeBuild = new CodeBuild.CodeBuildClient({ });
 
-export const buildBitbucketBuildStatusBody = (
+export const buildBitbucketBuildStatusBody = async (
   event: AwsLambda.CodeBuildCloudWatchStateEvent,
-  actionStatus: AwsLambda.CodeBuildStateType): BitbucketBuildStatus => {
+  actionStatus: AwsLambda.CodeBuildStateType): Promise<BitbucketBuildStatus> => {
   const detail = event.detail;
   const state =
     actionStatus === 'IN_PROGRESS' ? 'INPROGRESS' :
@@ -19,7 +20,7 @@ export const buildBitbucketBuildStatusBody = (
   return {
     state,
     key: `${detail['project-name']}-${buildId}`,
-    name: `CodeBuild-${detail['project-name']}`,
+    name: `CodeBuild-${detail['project-name']} (${await getCurrentAccountAlias(event.account)})`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codebuild/${event.account}/projects/${detail['project-name']}/build/${detail['project-name']}:${buildId}/?region=${event.region}`,
     description: `${detail['project-name']} build initiated by ${detail['additional-information'].initiator} at ${detail['additional-information']['build-start-time']}`,
   };
@@ -40,7 +41,7 @@ exports.handler = async (event: AwsLambda.CodeBuildCloudWatchStateEvent) => {
   // console.log(JSON.stringify(event, undefined, 2));
 
   try {
-    const status = buildBitbucketBuildStatusBody(event, event.detail['build-status']);
+    const status = await buildBitbucketBuildStatusBody(event, event.detail['build-status']);
     const commitId = await getCommitId(event.detail['build-id']);
 
     // Skip S3 events. See https://docs.aws.amazon.com/codebuild/latest/userguide/sample-source-version.html

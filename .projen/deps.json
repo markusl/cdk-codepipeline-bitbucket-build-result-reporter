@@ -19,7 +19,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^10.17.0",
+      "version": "^14.15.0",
       "type": "build"
     },
     {
@@ -28,6 +28,10 @@
     },
     {
       "name": "@typescript-eslint/parser",
+      "type": "build"
+    },
+    {
+      "name": "aws-sdk-client-mock",
       "type": "build"
     },
     {
@@ -112,6 +116,10 @@
     },
     {
       "name": "@aws-sdk/client-codepipeline",
+      "type": "bundled"
+    },
+    {
+      "name": "@aws-sdk/client-iam",
       "type": "bundled"
     },
     {
