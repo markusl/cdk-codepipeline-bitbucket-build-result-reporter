@@ -1,5 +1,5 @@
 import { Capture } from '@aws-cdk/assert';
-import { App, Stack, aws_ec2 as ec2 } from 'aws-cdk-lib';
+import { App, Stack, aws_ssm as ssm, aws_ec2 as ec2 } from 'aws-cdk-lib';
 import { CodePipelineBitbucketBuildResultReporter } from '../src/index';
 import '@aws-cdk/assert/jest';
 
@@ -19,7 +19,7 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
 
   new CodePipelineBitbucketBuildResultReporter(stack, 'CodePipelineBitbucketBuildResultReporter', {
     bitbucketServerAddress: 'bitbucket-server.com',
-    bitbucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+    bitbucketAccessToken: ssm.StringParameter.fromStringParameterName(stack, 'param', '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN'),
     vpc: fakeVpc,
   });
 
@@ -140,9 +140,33 @@ test('Create CodePipelineBitbucketBuildResultReporter', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: 'ssm:GetParameter',
+          Action: [
+            'ssm:DescribeParameters',
+            'ssm:GetParameters',
+            'ssm:GetParameter',
+            'ssm:GetParameterHistory',
+          ],
           Effect: 'Allow',
-          Resource: 'arn:aws:ssm:*:*:parameter//my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+          Resource: {
+            'Fn::Join': [
+              '',
+              [
+                'arn:',
+                {
+                  Ref: 'AWS::Partition',
+                },
+                ':ssm:',
+                {
+                  Ref: 'AWS::Region',
+                },
+                ':',
+                {
+                  Ref: 'AWS::AccountId',
+                },
+                ':parameter/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+              ],
+            ],
+          },
         },
         {
           Action: [

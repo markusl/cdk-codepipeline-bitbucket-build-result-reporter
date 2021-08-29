@@ -26,10 +26,15 @@ Configure the Bitbucket token that is used to synchronize statuses:
 Note: `stack` must be a CDK deployment stage so that the bundled Lambda asset will be properly deployed.
 
 ```ts
+  // AWS CDK 2.0
+  import { App, Stack, aws_ssm as ssm, aws_ec2 as ec2 } from 'aws-cdk-lib';
+
+  const accessToken = ssm.StringParameter.fromStringParameterName(stack, 'param', '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN');
+
   // In your infrastructure account, add to your stack
   new CodePipelineBitbucketBuildResultReporter(stack, 'CodePipelineBitbucketBuildResultReporter', {
     bitBucketServerAddress: 'bitbucket-server.com',
-    bitBucketTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
+    bitbucketAccessToken: accessToken,
     vpc,
   });
 ```
