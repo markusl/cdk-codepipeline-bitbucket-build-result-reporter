@@ -1,7 +1,6 @@
 import {
   aws_ec2 as ec2,
   aws_iam as iam,
-  aws_ssm as ssm,
   aws_logs as logs,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
@@ -37,6 +36,11 @@ const listAliasesPolicy = new iam.PolicyStatement({
   resources: ['*'],
 });
 
+const ssmPolicy = (bitbucketTokenName: string) => new iam.PolicyStatement({
+  actions: ['ssm:GetParameter'],
+  resources: [`arn:aws:ssm:*:*:parameter/${bitbucketTokenName}`],
+});
+
 /** Common properties */
 export interface CodePipelineBitbucketBuildResultReporterProps {
   /**
@@ -45,10 +49,10 @@ export interface CodePipelineBitbucketBuildResultReporterProps {
   readonly vpc?: ec2.VpcAttributes;
 
   /**
-   * The SSM parameter (SecureString) that contains the BitBucket access token for reporting build statuses.
+   * The SSM parameter (SecureString) name that contains the BitBucket access token for reporting build statuses.
    * @default BITBUCKET_UPDATE_BUILD_STATUS_TOKEN
    */
-  readonly bitbucketAccessToken?: ssm.IStringParameter;
+  readonly bitbucketAccessTokenName?: string;
 
   /**
    * The BitBucket server address.
@@ -58,14 +62,15 @@ export interface CodePipelineBitbucketBuildResultReporterProps {
 
 const defaultBitbucketAccessTokenParameterName = 'BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
-/** A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
- * You need to configure SSM parameter BITBUCKET_UPDATE_BUILD_STATUS_TOKEN before using the component.
+/** A CDK construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
+ * You need to configure SSM parameter `BITBUCKET_UPDATE_BUILD_STATUS_TOKEN` before using the construct.
+ *
+ * @stability stable
  */
 export class CodePipelineBitbucketBuildResultReporter extends Construct {
   constructor(scope: Construct, id: string, props: CodePipelineBitbucketBuildResultReporterProps) {
     super(scope, id);
-    const accessToken = props.bitbucketAccessToken ??
-      ssm.StringParameter.fromStringParameterName(this, defaultBitbucketAccessTokenParameterName, defaultBitbucketAccessTokenParameterName);
+    const accessTokenName = props.bitbucketAccessTokenName ?? defaultBitbucketAccessTokenParameterName;
     const vpc = props.vpc ? ec2.Vpc.fromVpcAttributes(scope, 'LambdaVpc', props.vpc) : undefined;
     const codePipelineStatusHandler = new lambda_nodejs.NodejsFunction(scope, 'CodePipelineStatusHandler', {
       vpc,
@@ -74,11 +79,11 @@ export class CodePipelineBitbucketBuildResultReporter extends Construct {
       description: 'Synchronize CodePipeline build statuses to BitBucket',
       environment: {
         BITBUCKET_SERVER: props.bitbucketServerAddress,
-        BITBUCKET_TOKEN: accessToken.parameterName,
+        BITBUCKET_TOKEN: accessTokenName,
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
-    accessToken.grantRead(codePipelineStatusHandler);
+    codePipelineStatusHandler.role?.addToPrincipalPolicy(ssmPolicy(accessTokenName));
     codePipelineStatusHandler.role?.addToPrincipalPolicy(listAliasesPolicy);
     codePipelineStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codepipeline:GetPipelineExecution', 'codepipeline:GetPipelineState'],
@@ -96,11 +101,11 @@ export class CodePipelineBitbucketBuildResultReporter extends Construct {
       description: 'Synchronize CodeBuild build statuses to BitBucket',
       environment: {
         BITBUCKET_SERVER: props.bitbucketServerAddress,
-        BITBUCKET_TOKEN: accessToken.parameterName,
+        BITBUCKET_TOKEN: accessTokenName,
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
-    accessToken.grantRead(codeBuildStatusHandler);
+    codePipelineStatusHandler.role?.addToPrincipalPolicy(ssmPolicy(accessTokenName));
     codeBuildStatusHandler.role?.addToPrincipalPolicy(listAliasesPolicy);
     codeBuildStatusHandler.role?.addToPrincipalPolicy(new iam.PolicyStatement({
       actions: ['codebuild:BatchGetBuilds'],

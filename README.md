@@ -29,12 +29,12 @@ Note: `stack` must be a CDK deployment stage so that the bundled Lambda asset wi
   // AWS CDK 2.0
   import { App, Stack, aws_ssm as ssm, aws_ec2 as ec2 } from 'aws-cdk-lib';
 
-  const accessToken = ssm.StringParameter.fromStringParameterName(stack, 'param', '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN');
+  const bitbucketAccessTokenName = '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN';
 
   // In your infrastructure account, add to your stack
   new CodePipelineBitbucketBuildResultReporter(stack, 'CodePipelineBitbucketBuildResultReporter', {
-    bitBucketServerAddress: 'bitbucket-server.com',
-    bitbucketAccessToken: accessToken,
-    vpc,
+    bitbucketServerAddress: 'bitbucket-server.com',
+    bitbucketAccessTokenName,
+    vpc: fakeVpc,
   });
 ```

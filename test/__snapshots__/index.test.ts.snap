@@ -1,0 +1,502 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodePipelineBitbucketBuildResultReporter produces expected template 1`] = `
+Object {
+  "Resources": Object {
+    "CodeBuildStatusHandlerE1754F65": Object {
+      "DependsOn": Array [
+        "CodeBuildStatusHandlerServiceRoleDefaultPolicy8BCA6254",
+        "CodeBuildStatusHandlerServiceRoleF342BBC4",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "9672b4193341cccfb4184aa1364a2e9628f0a6fb71514e72d661feb045918fb0.zip",
+        },
+        "Description": "Synchronize CodeBuild build statuses to BitBucket",
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "BITBUCKET_SERVER": "bitbucket-server.com",
+            "BITBUCKET_TOKEN": "/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN",
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 256,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CodeBuildStatusHandlerServiceRoleF342BBC4",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "VpcConfig": Object {
+          "SecurityGroupIds": Array [
+            Object {
+              "Fn::GetAtt": Array [
+                "CodeBuildStatusHandlerSecurityGroup47948056",
+                "GroupId",
+              ],
+            },
+          ],
+          "SubnetIds": Array [
+            "subnet-8888",
+            "subnet-9999",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CodeBuildStatusHandlerLogRetention760110C5": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/lambda/",
+              Object {
+                "Ref": "CodeBuildStatusHandlerE1754F65",
+              },
+            ],
+          ],
+        },
+        "RetentionInDays": 30,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "CodeBuildStatusHandlerSecurityGroup47948056": Object {
+      "Properties": Object {
+        "GroupDescription": "Automatic security group for Lambda Function testingstackCodeBuildStatusHandler2993D58A",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": "vpc-12345678",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "CodeBuildStatusHandlerServiceRoleDefaultPolicy8BCA6254": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "iam:ListAccountAliases",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "codebuild:BatchGetBuilds",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CodeBuildStatusHandlerServiceRoleDefaultPolicy8BCA6254",
+        "Roles": Array [
+          Object {
+            "Ref": "CodeBuildStatusHandlerServiceRoleF342BBC4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CodeBuildStatusHandlerServiceRoleF342BBC4": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CodeCodeBuildStateChangeEventRule9537577D": Object {
+      "Properties": Object {
+        "EventPattern": Object {
+          "detail": Object {
+            "build-status": Array [
+              "IN_PROGRESS",
+              "SUCCEEDED",
+              "FAILED",
+              "STOPPED",
+            ],
+          },
+          "detail-type": Array [
+            "CodeBuild Build State Change",
+          ],
+          "source": Array [
+            "aws.codebuild",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "CodeBuildStatusHandlerE1754F65",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "CodeCodeBuildStateChangeEventRuleAllowEventRuletestingstackCodeBuildStatusHandler2993D58A58E9E0F4": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "CodeBuildStatusHandlerE1754F65",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "CodeCodeBuildStateChangeEventRule9537577D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "CodePipelineActionExecutionStateChangeRuleAllowEventRuletestingstackCodePipelineStatusHandler8D6F4B47692CF121": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "CodePipelineStatusHandlerA91EA00A",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "CodePipelineActionExecutionStateChangeRuleBDB3DFB0",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "CodePipelineActionExecutionStateChangeRuleBDB3DFB0": Object {
+      "Properties": Object {
+        "EventPattern": Object {
+          "detail": Object {
+            "state": Array [
+              "STARTED",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELED",
+            ],
+          },
+          "detail-type": Array [
+            "CodePipeline Action Execution State Change",
+          ],
+          "source": Array [
+            "aws.codepipeline",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "CodePipelineStatusHandlerA91EA00A",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "CodePipelineStatusHandlerA91EA00A": Object {
+      "DependsOn": Array [
+        "CodePipelineStatusHandlerServiceRoleDefaultPolicy8241AF3D",
+        "CodePipelineStatusHandlerServiceRole49C6622A",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "cd8c646ef542ab4433cbdf79112a760f75eee0f83af82913d538decfb16bb7ec.zip",
+        },
+        "Description": "Synchronize CodePipeline build statuses to BitBucket",
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "BITBUCKET_SERVER": "bitbucket-server.com",
+            "BITBUCKET_TOKEN": "/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN",
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 256,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CodePipelineStatusHandlerServiceRole49C6622A",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "VpcConfig": Object {
+          "SecurityGroupIds": Array [
+            Object {
+              "Fn::GetAtt": Array [
+                "CodePipelineStatusHandlerSecurityGroup7B4F49AA",
+                "GroupId",
+              ],
+            },
+          ],
+          "SubnetIds": Array [
+            "subnet-8888",
+            "subnet-9999",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CodePipelineStatusHandlerLogRetention5118C73F": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/lambda/",
+              Object {
+                "Ref": "CodePipelineStatusHandlerA91EA00A",
+              },
+            ],
+          ],
+        },
+        "RetentionInDays": 30,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "CodePipelineStatusHandlerSecurityGroup7B4F49AA": Object {
+      "Properties": Object {
+        "GroupDescription": "Automatic security group for Lambda Function testingstackCodePipelineStatusHandler8D6F4B47",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": "vpc-12345678",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "CodePipelineStatusHandlerServiceRole49C6622A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CodePipelineStatusHandlerServiceRoleDefaultPolicy8241AF3D": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": "arn:aws:ssm:*:*:parameter//my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN",
+            },
+            Object {
+              "Action": "iam:ListAccountAliases",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "codepipeline:GetPipelineExecution",
+                "codepipeline:GetPipelineState",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:codepipeline:*:*:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CodePipelineStatusHandlerServiceRoleDefaultPolicy8241AF3D",
+        "Roles": Array [
+          Object {
+            "Ref": "CodePipelineStatusHandlerServiceRole49C6622A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": Object {
+      "DependsOn": Array [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "f3b4457410e8875dce33608b6046e993c1ba6def4d00e9de1ed9681517a35e45.zip",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": Array [
+          Object {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;

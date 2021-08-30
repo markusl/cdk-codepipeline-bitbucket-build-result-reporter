@@ -4,9 +4,9 @@
 
 ### CodePipelineBitbucketBuildResultReporter <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporter"></a>
 
-A construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
+A CDK construct for reporting CodePipeline build statuses to a BitBucket server using BitBucket REST API.
 
-You need to configure SSM parameter BITBUCKET_UPDATE_BUILD_STATUS_TOKEN before using the component.
+You need to configure SSM parameter `BITBUCKET_UPDATE_BUILD_STATUS_TOKEN` before using the construct.
 
 #### Initializer <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporter.Initializer"></a>
 
@@ -60,12 +60,12 @@ The BitBucket server address.
 
 ---
 
-##### `bitbucketAccessToken`<sup>Optional</sup> <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporterProps.property.bitbucketAccessToken"></a>
+##### `bitbucketAccessTokenName`<sup>Optional</sup> <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporterProps.property.bitbucketAccessTokenName"></a>
 
-- *Type:* [`aws-cdk-lib.aws_ssm.IStringParameter`](#aws-cdk-lib.aws_ssm.IStringParameter)
+- *Type:* `string`
 - *Default:* BITBUCKET_UPDATE_BUILD_STATUS_TOKEN
 
-The SSM parameter (SecureString) that contains the BitBucket access token for reporting build statuses.
+The SSM parameter (SecureString) name that contains the BitBucket access token for reporting build statuses.
 
 ---
 
