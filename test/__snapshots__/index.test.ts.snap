@@ -91,6 +91,11 @@ Object {
         "PolicyDocument": Object {
           "Statement": Array [
             Object {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": "arn:aws:ssm:*:*:parameter//my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN",
+            },
+            Object {
               "Action": "iam:ListAccountAliases",
               "Effect": "Allow",
               "Resource": "*",
