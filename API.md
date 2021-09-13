@@ -8,7 +8,7 @@ A CDK construct for reporting CodePipeline build statuses to a BitBucket server 
 
 You need to configure SSM parameter `BITBUCKET_UPDATE_BUILD_STATUS_TOKEN` before using the construct.
 
-#### Initializer <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporter.Initializer"></a>
+#### Initializers <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporter.Initializer"></a>
 
 ```typescript
 import { CodePipelineBitbucketBuildResultReporter } from 'cdk-codepipeline-bitbucket-build-result-reporter'
