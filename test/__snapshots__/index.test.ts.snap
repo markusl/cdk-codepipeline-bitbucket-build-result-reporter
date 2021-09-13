@@ -13,7 +13,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "9672b4193341cccfb4184aa1364a2e9628f0a6fb71514e72d661feb045918fb0.zip",
+          "S3Key": "2af478f2a1d60548b691e8a80705d42c843c6a7e963d3e6198270fb7b7b95abf.zip",
         },
         "Description": "Synchronize CodeBuild build statuses to BitBucket",
         "Environment": Object {
@@ -274,7 +274,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "cd8c646ef542ab4433cbdf79112a760f75eee0f83af82913d538decfb16bb7ec.zip",
+          "S3Key": "10e16c1d52accb9a2053509c031bcf452f8ca6e7b7b5cc80fcc3826648e4fbbc.zip",
         },
         "Description": "Synchronize CodePipeline build statuses to BitBucket",
         "Environment": Object {
