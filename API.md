@@ -54,6 +54,10 @@ const codePipelineBitbucketBuildResultReporterProps: CodePipelineBitbucketBuildR
 
 ##### `bitbucketServerAddress`<sup>Required</sup> <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporterProps.property.bitbucketServerAddress"></a>
 
+```typescript
+public readonly bitbucketServerAddress: string;
+```
+
 - *Type:* `string`
 
 The BitBucket server address.
@@ -61,6 +65,10 @@ The BitBucket server address.
 ---
 
 ##### `bitbucketAccessTokenName`<sup>Optional</sup> <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporterProps.property.bitbucketAccessTokenName"></a>
+
+```typescript
+public readonly bitbucketAccessTokenName: string;
+```
 
 - *Type:* `string`
 - *Default:* BITBUCKET_UPDATE_BUILD_STATUS_TOKEN
@@ -70,6 +78,10 @@ The SSM parameter (SecureString) name that contains the BitBucket access token f
 ---
 
 ##### `vpc`<sup>Optional</sup> <a name="cdk-codepipeline-bitbucket-build-result-reporter.CodePipelineBitbucketBuildResultReporterProps.property.vpc"></a>
+
+```typescript
+public readonly vpc: VpcAttributes;
+```
 
 - *Type:* [`aws-cdk-lib.aws_ec2.VpcAttributes`](#aws-cdk-lib.aws_ec2.VpcAttributes)
 
