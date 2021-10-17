@@ -13,7 +13,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "9b3b41bc5cf50702d375343a116718425c1f5b15c541d3072772455c04280e01.zip",
+          "S3Key": "fff8b599db733ba7b59ee019504eb47a36c3946ae4050a497fada9d56fea5543.zip",
         },
         "Description": "Synchronize CodeBuild build statuses to BitBucket",
         "Environment": Object {
@@ -274,7 +274,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "b99a9aae9ba43f9550074b244148e482ef8fb9abcc117d9e7e4878633c31af71.zip",
+          "S3Key": "cac2ed5166814476bdf89ab0e2270591a14b44550ab27aa15b6de6bbaf2a78a9.zip",
         },
         "Description": "Synchronize CodePipeline build statuses to BitBucket",
         "Environment": Object {
@@ -434,7 +434,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f3b4457410e8875dce33608b6046e993c1ba6def4d00e9de1ed9681517a35e45.zip",
+          "S3Key": "54aa9368cb0af77728b139df544966eb0ee9754a76a567e67d1db78a861cdb72.zip",
         },
         "Handler": "index.handler",
         "Role": Object {
