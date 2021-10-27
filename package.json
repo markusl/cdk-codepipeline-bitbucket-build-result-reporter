@@ -8,7 +8,6 @@
   "scripts": {
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
-    "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
     "test:watch": "npx projen test:watch",
@@ -34,7 +33,7 @@
     "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/assert": "^2.0.0-rc.23",
+    "@aws-cdk/assert": "^2.0.0-rc.25",
     "@types/aws-lambda": "^8.10.84",
     "@types/jest": "^27.0.2",
     "@types/node": "^14.15.0",
@@ -48,30 +47,30 @@
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.2",
-    "jest": "^27.2.5",
+    "jest": "^27.3.1",
     "jest-junit": "^12",
-    "jsii": "^1.39.0",
-    "jsii-diff": "^1.39.0",
-    "jsii-docgen": "^3.7.9",
-    "jsii-pacmak": "^1.39.0",
+    "jsii": "^1.40.0",
+    "jsii-diff": "^1.40.0",
+    "jsii-docgen": "^3.8.10",
+    "jsii-pacmak": "^1.40.0",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.29.14",
+    "projen": "^0.31.14",
     "standard-version": "^9",
     "ts-jest": "^27.0.7",
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "^2.0.0-rc.23",
+    "aws-cdk-lib": "^2.0.0-rc.25",
     "constructs": "^10.0.5"
   },
   "dependencies": {
-    "@aws-sdk/client-codebuild": "^3.37.0",
-    "@aws-sdk/client-codepipeline": "^3.37.0",
-    "@aws-sdk/client-iam": "^3.37.0",
-    "@aws-sdk/client-s3": "^3.37.0",
-    "@aws-sdk/client-ssm": "^3.37.0",
-    "aws-cdk-lib": "^2.0.0-rc.23",
+    "@aws-sdk/client-codebuild": "^3.38.0",
+    "@aws-sdk/client-codepipeline": "^3.38.0",
+    "@aws-sdk/client-iam": "^3.38.0",
+    "@aws-sdk/client-s3": "^3.38.0",
+    "@aws-sdk/client-ssm": "^3.38.0",
+    "aws-cdk-lib": "^2.0.0-rc.25",
     "aws-lambda": "^1.0.6",
     "node-fetch": "^2.6.5"
   },
@@ -128,7 +127,7 @@
     "preset": "ts-jest",
     "globals": {
       "ts-jest": {
-        "tsconfig": "tsconfig.jest.json"
+        "tsconfig": "tsconfig.dev.json"
       }
     }
   },
