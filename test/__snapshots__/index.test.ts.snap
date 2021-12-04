@@ -9,11 +9,14 @@ Object {
         "CodeBuildStatusHandlerServiceRoleF342BBC4",
       ],
       "Properties": Object {
+        "Architectures": Array [
+          "arm64",
+        ],
         "Code": Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f20d34aba2043ca3b3f2e3470be6f121df1c8736eeb10cab31ebd136d4273664.zip",
+          "S3Key": "30303650c9e838ce55b47b42fd2922c35266b1c0eaca4c442b3c95cea522824b.zip",
         },
         "Description": "Synchronize CodeBuild build statuses to BitBucket",
         "Environment": Object {
@@ -270,11 +273,14 @@ Object {
         "CodePipelineStatusHandlerServiceRole49C6622A",
       ],
       "Properties": Object {
+        "Architectures": Array [
+          "arm64",
+        ],
         "Code": Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f962384efdb19b2eb76dd31e621aa1aaee9508655978f4d0bdaeae4a5f27e9d9.zip",
+          "S3Key": "836ba722dc9dad4f3830e5521a4c07bb0a189bb19d921c2e4aaad437ca686be6.zip",
         },
         "Description": "Synchronize CodePipeline build statuses to BitBucket",
         "Environment": Object {

@@ -2,7 +2,7 @@ const {
   AwsCdkConstructLibrary,
 } = require('projen');
 
-const AWS_CDK_LATEST_RELEASE = '2.0.0-rc.30';
+const AWS_CDK_LATEST_RELEASE = '2.0.0';
 
 const PROJECT_NAME = 'cdk-codepipeline-bitbucket-build-result-reporter';
 const PROJECT_DESCRIPTION = 'A JSII construct lib for reporting AWS CodePipeline and build statuses to a Bitbucket server instance';
@@ -16,7 +16,7 @@ const project = new AwsCdkConstructLibrary({
   repository: 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
   cdkVersion: AWS_CDK_LATEST_RELEASE,
   defaultReleaseBranch: 'master',
-  minNodeVersion: '14.15.0',
+  minNodeVersion: '14.17.0',
   tsconfig: {
     compilerOptions: {
       lib: ['ES2020', 'DOM'],
@@ -30,7 +30,7 @@ const project = new AwsCdkConstructLibrary({
     '@types/node-fetch',
     'aws-sdk-client-mock',
     'esbuild',
-    'constructs@10.0.5',
+    'constructs@10.0.9',
   ],
   bundledDeps: [
     '@aws-sdk/client-iam',

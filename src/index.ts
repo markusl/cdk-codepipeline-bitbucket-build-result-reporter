@@ -70,6 +70,7 @@ const lambdaProps = (
   vpc,
   runtime: lambda.Runtime.NODEJS_14_X,
   memorySize: 256,
+  architecture: lambda.Architecture.ARM_64,
   description: `Synchronize ${what} build statuses to BitBucket`,
   environment: {
     BITBUCKET_SERVER: bitbucketServerAddress,
