@@ -1,5 +1,5 @@
 const {
-  AwsCdkConstructLibrary,
+  awscdk,
 } = require('projen');
 
 const AWS_CDK_LATEST_RELEASE = '2.0.0';
@@ -7,7 +7,7 @@ const AWS_CDK_LATEST_RELEASE = '2.0.0';
 const PROJECT_NAME = 'cdk-codepipeline-bitbucket-build-result-reporter';
 const PROJECT_DESCRIPTION = 'A JSII construct lib for reporting AWS CodePipeline and build statuses to a Bitbucket server instance';
 
-const project = new AwsCdkConstructLibrary({
+const project = new awscdk.AwsCdkConstructLibrary({
   name: PROJECT_NAME,
   description: PROJECT_DESCRIPTION,
   authorName: 'Markus Lindqvist',

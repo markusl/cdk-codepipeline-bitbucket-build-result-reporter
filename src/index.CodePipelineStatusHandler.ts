@@ -20,7 +20,7 @@ export const buildBitbucketBuildStatusBody = async (
   return {
     state,
     key: `${detail.stage}-${detail.action}`,
-    name: `${detail.stage}-${detail.action} (${await getCurrentAccountAlias(event.account)})`,
+    name: `CodePipeline ${detail.pipeline} ${detail.stage}/${detail.action} (${await getCurrentAccountAlias(event.account)} @ ${event.region})`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${detail.pipeline}/view`,
     description: `${detail.stage}-${detail.action}`,
   };

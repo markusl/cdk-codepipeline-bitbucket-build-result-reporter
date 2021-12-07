@@ -137,8 +137,8 @@ const event = (status: AwsLambda.CodeBuildStateType): AwsLambda.CodeBuildCloudWa
 test('buildBitbucketBuildStatus InProgress', async () => {
   expect(await buildBitbucketBuildStatusBody(event('IN_PROGRESS'), 'IN_PROGRESS')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
-    key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project (123456789012)',
+    key: 'my-sample-project',
+    name: 'CodeBuild my-sample-project (123456789012 @ us-west-2)',
     state: 'INPROGRESS',
     url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
@@ -147,8 +147,8 @@ test('buildBitbucketBuildStatus InProgress', async () => {
 test('buildBitbucketBuildStatus Succeeded', async () => {
   expect(await buildBitbucketBuildStatusBody(event('SUCCEEDED'), 'SUCCEEDED')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
-    key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project (123456789012)',
+    key: 'my-sample-project',
+    name: 'CodeBuild my-sample-project (123456789012 @ us-west-2)',
     state: 'SUCCESSFUL',
     url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });
@@ -157,8 +157,8 @@ test('buildBitbucketBuildStatus Succeeded', async () => {
 test('buildBitbucketBuildStatus Failed', async () => {
   expect(await buildBitbucketBuildStatusBody(event('FAILED'), 'FAILED')).toMatchObject({
     description: 'my-sample-project build initiated by MyCodeBuildDemoUser at Sep 1, 2017 4:12:29 PM',
-    key: 'my-sample-project-8745a7a9-c340-456a-9166-edf953571bEX',
-    name: 'CodeBuild-my-sample-project (123456789012)',
+    key: 'my-sample-project',
+    name: 'CodeBuild my-sample-project (123456789012 @ us-west-2)',
     state: 'FAILED',
     url: 'https://us-west-2.console.aws.amazon.com/codesuite/codebuild/123456789012/projects/my-sample-project/build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX/?region=us-west-2',
   });

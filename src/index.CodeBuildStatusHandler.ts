@@ -19,8 +19,8 @@ export const buildBitbucketBuildStatusBody = async (
   const buildId = detail['build-id'].split(':').slice(-1)[0];
   return {
     state,
-    key: `${detail['project-name']}-${buildId}`,
-    name: `CodeBuild-${detail['project-name']} (${await getCurrentAccountAlias(event.account)})`,
+    key: detail['project-name'],
+    name: `CodeBuild ${detail['project-name']} (${await getCurrentAccountAlias(event.account)} @ ${event.region})`,
     url: `https://${event.region}.console.aws.amazon.com/codesuite/codebuild/${event.account}/projects/${detail['project-name']}/build/${detail['project-name']}:${buildId}/?region=${event.region}`,
     description: `${detail['project-name']} build initiated by ${detail['additional-information'].initiator} at ${detail['additional-information']['build-start-time']}`,
   };

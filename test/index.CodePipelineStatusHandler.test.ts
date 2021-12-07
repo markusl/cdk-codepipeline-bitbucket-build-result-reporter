@@ -37,7 +37,7 @@ test('buildBitbucketBuildStatus InProgress', async () => {
   expect(await buildBitbucketBuildStatusBody(event('STARTED'), CodePipeline.ActionExecutionStatus.InProgress)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction (Pipeline_Account)',
+    name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'INPROGRESS',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
@@ -47,7 +47,7 @@ test('buildBitbucketBuildStatus Succeeded', async () => {
   expect(await buildBitbucketBuildStatusBody(event('SUCCEEDED'), CodePipeline.ActionExecutionStatus.Succeeded)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction (Pipeline_Account)',
+    name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
@@ -57,7 +57,7 @@ test('buildBitbucketBuildStatus Superseded', async () => {
   expect(await buildBitbucketBuildStatusBody(event('CANCELED'), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction (Pipeline_Account)',
+    name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
@@ -72,7 +72,7 @@ test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', 
   }), CodePipeline.ActionExecutionStatus.Abandoned)).toMatchObject({
     description: 'Prod-myAction',
     key: 'Prod-myAction',
-    name: 'Prod-myAction (Pipeline_Account)',
+    name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
     url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
   });
