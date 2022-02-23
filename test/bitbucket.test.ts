@@ -1,6 +1,5 @@
 import * as SSM from '@aws-sdk/client-ssm';
 import { mockClient } from 'aws-sdk-client-mock';
-import '@aws-cdk/assert/jest';
 import { getToken } from '../src/bitbucket';
 
 const ssmMock = mockClient(SSM.SSMClient);

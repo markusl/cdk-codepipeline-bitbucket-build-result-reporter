@@ -1,5 +1,5 @@
-import { SynthUtils } from '@aws-cdk/assert';
 import { App, Stack, aws_ec2 as ec2 } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
 import { CodePipelineBitbucketBuildResultReporter } from '../src/index';
 
 test('CodePipelineBitbucketBuildResultReporter produces expected template', () => {
@@ -21,5 +21,5 @@ test('CodePipelineBitbucketBuildResultReporter produces expected template', () =
     bitbucketAccessTokenName: '/my/ssm/variable/BITBUCKET_UPDATE_BUILD_STATUS_TOKEN',
     vpc: fakeVpc,
   });
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack)).toMatchSnapshot();
 });

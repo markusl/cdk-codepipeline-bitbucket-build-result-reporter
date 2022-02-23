@@ -1,6 +1,5 @@
 import * as IAM from '@aws-sdk/client-iam';
 import { mockClient } from 'aws-sdk-client-mock';
-import '@aws-cdk/assert/jest';
 import { getCurrentAccountAlias } from '../src/iam-helper';
 
 const iamMock = mockClient(IAM.IAMClient);

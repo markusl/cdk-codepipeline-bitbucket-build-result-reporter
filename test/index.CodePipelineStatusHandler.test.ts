@@ -1,7 +1,6 @@
 import * as CodePipeline from '@aws-sdk/client-codepipeline';
 import type * as AwsLambda from 'aws-lambda';
 import { mockClient } from 'aws-sdk-client-mock';
-import '@aws-cdk/assert/jest';
 import { buildBitbucketBuildStatusBody, getPipelineActionLatestStatus } from '../src/index.CodePipelineStatusHandler';
 
 const codePipelineMock = mockClient(CodePipeline.CodePipelineClient);
