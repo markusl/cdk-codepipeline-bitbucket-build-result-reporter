@@ -38,7 +38,7 @@ test('buildBitbucketBuildStatus InProgress', async () => {
     key: 'Prod-myAction',
     name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'INPROGRESS',
-    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/executions/execution_Id/visualization',
   });
 });
 
@@ -48,7 +48,7 @@ test('buildBitbucketBuildStatus Succeeded', async () => {
     key: 'Prod-myAction',
     name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
-    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/executions/execution_Id/visualization',
   });
 });
 
@@ -58,7 +58,7 @@ test('buildBitbucketBuildStatus Superseded', async () => {
     key: 'Prod-myAction',
     name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
-    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/executions/execution_Id/visualization',
   });
 });
 
@@ -73,7 +73,7 @@ test('buildBitbucketBuildStatus FAILED Manual Approval is reported as success', 
     key: 'Prod-myAction',
     name: 'CodePipeline myPipeline Prod/myAction (Pipeline_Account @ us-east-1)',
     state: 'SUCCESSFUL',
-    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/view',
+    url: 'https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/myPipeline/executions/execution_Id/visualization',
   });
 });
 
