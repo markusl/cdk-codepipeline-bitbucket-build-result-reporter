@@ -12,8 +12,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorEmail: 'markus.lindqvist@iki.fi',
   stability: 'stable',
   repository: 'https://github.com/markusl/cdk-codepipeline-bitbucket-build-result-reporter.git',
-  cdkVersion: '2.22.0',
-  constructsVersion: '10.0.130',
+  cdkVersion: '2.40.0',
+  constructsVersion: '10.1.93',
   defaultReleaseBranch: 'master',
   minNodeVersion: '14.17.0',
   tsconfig: {
